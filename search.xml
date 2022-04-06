@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/03/30/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>神经网络笔记</title>
+    <url>/2022/03/31/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="神经网络笔记"><a href="#神经网络笔记" class="headerlink" title="神经网络笔记"></a>神经网络笔记</h1><h3 id="1、神经网络模型概括："><a href="#1、神经网络模型概括：" class="headerlink" title="1、神经网络模型概括："></a>1、神经网络模型概括：</h3><p>1、主要分为4个部分分别是：1、Dataset  2、Model 3、Training 4、inferring</p>
+<p>损失函数$loss&#x3D;(y_x-y)^2$</p>
+<p>权重:w</p>
+<p>权重w一般与模型中的w有关，$y&#x3D;x*w+b%+$</p>
+<p>梯度：$\alpha cost&#x2F;\alpha w$</p>
+<p>更新：$w&#x3D;w-\sigma\alpha cost&#x2F;\alpha w$,其中$\sigma$为学习率</p>
+<p>2、神经网络是在不断求最小的损失值，之后权重随着梯度不断减小以达到最符合模型的函数</p>
+<p><strong>神经网络中的“学习”，是指从训练数据中自动获取“最优权重”的过程。学习的目的就是以该损失函数为基准，找出能使他的值达到最小权重的参数</strong></p>
+<p>1）神经网络——————最小损失函数值</p>
+<p>2）最小损失函数值——————最优参数（权重和偏置）</p>
+<p>3）寻找使损失函数最小值的参数——————参数的导数（梯度）</p>
+<p>4）并且用这个导数作为指引——————更新参数值gradient</p>
+<p>5）反向传播是计算loss函数对每个w的梯度，然后更新w来进行梯度下降，降低loss</p>
+<p>当梯度＞0时，w负方向，loss减下</p>
+<p>当梯度＜0时，w正方向，loss减小</p>
+<p><img src="/2022/03/31/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png"></p>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>卷积神经网络</title>
+    <url>/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</url>
+    <content><![CDATA[<h1 id="MINIST-NOTE"><a href="#MINIST-NOTE" class="headerlink" title="MINIST NOTE"></a>MINIST NOTE</h1><h2 id="1-图像数据处理"><a href="#1-图像数据处理" class="headerlink" title="1.图像数据处理"></a>1.图像数据处理</h2><p>1、W * H * C转换为C * W  *H 需要变成向量使用Totensor</p>
+<p>2、神经网络处理数据一般都在0-1之间所以需要压缩数据将255转换为1（数据标准化） Normalize</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">transform=transforms.Compose([transforms.ToTensor(),</span><br><span class="line">                             transforms.Normalize((<span class="number">0.1307</span>,),(<span class="number">0.3081</span>,))])</span><br><span class="line">train_dataset=datasets.MNIST(root=<span class="string">&#x27;D:/Anaconda3/Lib/site-packages/torchvision/datasets&#x27;</span>,train=<span class="literal">True</span>,download=<span class="literal">True</span>,</span><br><span class="line">                             transform=transform)</span><br><span class="line">train_loader=DataLoader(train_dataset,shuffle=<span class="literal">True</span>,batch_size=<span class="number">64</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-卷积神经网络"><a href="#2-卷积神经网络" class="headerlink" title="2.卷积神经网络"></a>2.卷积神经网络</h2><p>1、卷积神经网络结构：<em><strong>Input</strong></em>+<em><strong>（Feature Extraction）+Classfication</strong></em></p>
+<p><em><strong>Feature Extraction</strong></em>&#x3D;<em><strong>Convolution+Subsampling</strong></em></p>
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png"></p>
+<p>2、<em><strong>convolution</strong></em></p>
+<p><em><strong>kernel个数&#x3D;out_channel个数</strong></em></p>
+<p><em><strong>每一个in_kernel与输入in_channel</strong></em></p>
+<p>卷积公式：</p>
+<p> <em><strong>out_channel_size&#x3D;(n-k+2p)&#x2F;s+1</strong></em>且当p&#x3D;0,s&#x3D;1时为标准卷积公式,且当k&#x3D;3时，p&#x3D;1,s&#x3D;1图像大小不变</p>
+<p>in_channel_size&#x3D;n*n</p>
+<p>kernel_size&#x3D;k*k</p>
+<p>stride&#x3D;s</p>
+<p>padding&#x3D;p</p>
+<p>padding&#x3D;kernel_size&#x2F;2</p>
+<p>for example:</p>
+<p>out_channel_size&#x3D;(5-3)+1&#x3D;3</p>
+<p><em><strong>kernel_size&#x3D;5</strong></em>时，p&#x3D;2,s&#x3D;1原图像大小不变</p>
+<p>（5-5+4)+1&#x3D;5</p>
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/convolution.png"></p>
+<p>3、卷积原理与代码实现</p>
+<img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/卷积结构与代码实现1.png" style="zoom:50%;">
+
+<img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔卷积结构与代码实现.png" style="zoom:50%;">
+
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Net</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Net,self).__init__()</span><br><span class="line">        self.conv_1=torch.nn.Conv2d(<span class="number">1</span>,<span class="number">10</span>,kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv_2 = torch.nn.Conv2d(<span class="number">10</span>, <span class="number">20</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.pooling=torch.nn.MaxPool2d(<span class="number">2</span>)</span><br><span class="line">        self.fc=torch.nn.Linear(<span class="number">320</span>,<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        batch_size=x.size(<span class="number">0</span>)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_1(x)))</span><br><span class="line">        x=F.relu(self.pooling(self.conv_2(x)))</span><br><span class="line">        x=x.view(batch_size,-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> self.fc(x)</span><br><span class="line">model=Net()</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、复杂卷积神经网络（GoogleNet模型"><a href="#3、复杂卷积神经网络（GoogleNet模型" class="headerlink" title="3、复杂卷积神经网络（GoogleNet模型)"></a>3、复杂卷积神经网络（GoogleNet模型)</h2><p><em><strong>1、为了减少代码冗余，所以进行封装</strong></em></p>
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/googlenet%E5%8E%9F%E5%9B%A0.png"></p>
+<p><em><strong>2、Inception Module</strong></em>：在一个块中把所有Kernel放到模块中，从中选出最好的（沿着通道拼成一块）</p>
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/inception_1.png"></p>
+<p>最后将卷积核沿着通道拼接在一起</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">outputs=[branch1*<span class="number">1</span>,branch5*<span class="number">5</span>,branch3*<span class="number">3</span>,branch_pool]</span><br><span class="line"><span class="keyword">return</span> torch.cat(outputs,dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/inception.png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InceptionA</span>(torch.nn.Module)://Inception模块</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,in_channels</span>):</span><br><span class="line">        <span class="built_in">super</span>(InceptionA,self).__init__()</span><br><span class="line">        self.branch_pool=torch.nn.Conv2d(in_channels,<span class="number">24</span>,kernel_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        self.branch_1=torch.nn.Conv2d(in_channels,<span class="number">16</span>,kernel_size=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        self.branch_5_1=torch.nn.Conv2d(in_channels,<span class="number">16</span>,kernel_size=<span class="number">1</span>)</span><br><span class="line">        self.branch_5_2= torch.nn.Conv2d(<span class="number">16</span>, <span class="number">24</span>, kernel_size=<span class="number">5</span>,padding=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        self.branch_3_1=torch.nn.Conv2d(in_channels,<span class="number">16</span>,kernel_size=<span class="number">1</span>)</span><br><span class="line">        self.branch_3_2=torch.nn.Conv2d(<span class="number">16</span>,<span class="number">24</span>,kernel_size=<span class="number">3</span>,padding=<span class="number">1</span>)</span><br><span class="line">        self.branch_3_3=torch.nn.Conv2d(<span class="number">24</span>,<span class="number">24</span>,kernel_size=<span class="number">3</span>,padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        branch_1=self.branch_1(x)</span><br><span class="line"></span><br><span class="line">        branch_5=self.branch_5_1(x)</span><br><span class="line">        branch_5_2=self.branch_5_2(branch_5)</span><br><span class="line"></span><br><span class="line">        branch_3_1=self.branch_3_1(x)</span><br><span class="line">        branch_3_2=self.branch_3_2(branch_3_1)</span><br><span class="line">        branch_3_3=self.branch_3_3(branch_3_2)</span><br><span class="line"></span><br><span class="line">        branch_pool=F.avg_pool2d(x,kernel_size=<span class="number">3</span>,stride=<span class="number">1</span>,padding=<span class="number">1</span>)</span><br><span class="line">        branch_pool=self.branch_pool(branch_pool)</span><br><span class="line">        outputs=[branch_1,branch_5_2,branch_3_3,branch_pool]</span><br><span class="line">        <span class="keyword">return</span> torch.cat(outputs,dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Net</span>(torch.nn.Module):<span class="comment">#卷积神经网络模块，其中Inception模块放在第一次卷积神经网络后</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Net,self).__init__()</span><br><span class="line">        self.conv_1=torch.nn.Conv2d(<span class="number">1</span>,<span class="number">10</span>,kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv_2 = torch.nn.Conv2d(<span class="number">88</span>, <span class="number">20</span>, kernel_size=<span class="number">5</span>)<span class="comment">#88=24*3+16</span></span><br><span class="line">        self.incept_1=InceptionA(in_channels=<span class="number">10</span>)</span><br><span class="line">        self.incept_2=InceptionA(in_channels=<span class="number">20</span>)</span><br><span class="line">        self.pooling=torch.nn.MaxPool2d(<span class="number">2</span>)</span><br><span class="line">        self.fc=torch.nn.Linear(<span class="number">1408</span>,<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        batch_size=x.size(<span class="number">0</span>)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_1(x)))</span><br><span class="line">        x=self.incept_1(x)//inception模块插入位置</span><br><span class="line">        x=F.relu(self.pooling(self.conv_2(x)))</span><br><span class="line">        x=self.incept_2(x)//inception模块插入位置</span><br><span class="line">        x=x.view(batch_size,-<span class="number">1</span>)<span class="comment">#在这里print输出</span></span><br><span class="line">        <span class="keyword">return</span> self.fc(x)</span><br><span class="line">model=Net()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">问题<span class="number">1</span>、其中全连接的输入的<span class="number">1408</span>是怎么来的？需要用手算吗</span><br><span class="line">self.fc=torch.nn.Linear(<span class="number">1408</span>,<span class="number">10</span>)</span><br><span class="line">问题<span class="number">2</span>、x=x.view(batch_size,-<span class="number">1</span>)</span><br><span class="line">x.view（）函数的用法</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">答案是不需要用手去算的而是直接用代码输出</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Net</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Net,self).__init__()</span><br><span class="line">        self.conv_1=torch.nn.Conv2d(<span class="number">1</span>,<span class="number">10</span>,kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv_2 = torch.nn.Conv2d(<span class="number">88</span>, <span class="number">20</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.incept_1=InceptionA(in_channels=<span class="number">10</span>)</span><br><span class="line">        self.incept_2=InceptionA(in_channels=<span class="number">20</span>)</span><br><span class="line">        self.pooling=torch.nn.MaxPool2d(<span class="number">2</span>)</span><br><span class="line">       	<span class="comment">#self.fc=torch.nn.Linear(1408,10)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        batch_size=x.size(<span class="number">0</span>)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_1(x)))</span><br><span class="line">        x=self.incept_1(x)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_2(x)))</span><br><span class="line">        x=self.incept_2(x)</span><br><span class="line">        <span class="built_in">print</span>(x.size())</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">输出结果：torch.Size([<span class="number">64</span>, <span class="number">88</span>, <span class="number">4</span>, <span class="number">4</span>])</span><br><span class="line"><span class="number">1408</span>=<span class="number">88</span>*<span class="number">4</span>*<span class="number">4</span></span><br><span class="line">其中<span class="number">88</span>是输出维度，因为又重新调用了Inception 模块，而Inception模块的输出维度为<span class="number">88</span></span><br><span class="line">x.view(  A,-<span class="number">1</span>)</span><br><span class="line">根据A的大小自动调试</span><br></pre></td></tr></table></figure>
+
+
+
+<p><em><strong>3、Class类的实例化</strong></em></p>
+<p>1、构造函数带参数，实例化时就需要带参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(): <span class="comment">#定义类</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,name,leg=<span class="number">8</span></span>): <span class="comment">#构造函数带参数</span></span><br><span class="line">        self.name=name</span><br><span class="line">        self.leg=leg</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;我会跑&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(self.name)</span><br><span class="line">        <span class="built_in">print</span>(self.leg)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fly</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;我会飞&quot;</span>)</span><br><span class="line"></span><br><span class="line">zwj=Person(<span class="string">&quot;xiaomei&quot;</span>) <span class="comment">#实例化时需要带参数</span></span><br><span class="line">zwj.run()</span><br></pre></td></tr></table></figure>
+
+<p>2、构造函数未带参数，实例方法带参数，实例化无需带参数，调用方法时带参数即可</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span>(): <span class="comment">#定义类</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>): <span class="comment">#构造函数不带参数</span></span><br><span class="line">       <span class="built_in">print</span>(<span class="string">&quot;jjj&quot;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self,name,leg=<span class="number">8</span></span>): <span class="comment">#实例方法带参数</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;我会跑&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(name)</span><br><span class="line">        <span class="built_in">print</span>(leg)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fly</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;我会飞&quot;</span>)</span><br><span class="line"></span><br><span class="line">zwj=Person() <span class="comment">#实例化时不需要带参数</span></span><br><span class="line">zwj.run(<span class="string">&quot;xiaomei&quot;</span>) <span class="comment">#调取方法需要带参数</span></span><br></pre></td></tr></table></figure>
+
+<p><em><strong>总结：</strong></em></p>
+<p>1、构造函数未带参数的类进行实例化时，实例化对象不需要带参数，而其直接可以重复调用。</p>
+<p>2、构造函数带参数的类进行实例化时，实例化对象必须要带参数，而且每一次调用当传入函数不同时返回的值也不同。</p>
+<p><em><strong>For Example</strong></em>:</p>
+<p>当构造函数带参数，实例化对象却没有参数时会出现以下错误；</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">incept=InceptionA()</span><br><span class="line">TypeError: __init__() missing <span class="number">1</span> required positional argument: <span class="string">&#x27;in_channels&#x27;</span></span><br><span class="line">//构造函数缺少参数，而且根本不需要重复调用。</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、复杂卷积神经网络（Residual-net模型"><a href="#4、复杂卷积神经网络（Residual-net模型" class="headerlink" title="4、复杂卷积神经网络（Residual net模型)"></a>4、复杂卷积神经网络（Residual net模型)</h2><p>1、首先神经网络的层数并不是越深越好，当56层的神经网络已经不如20层的神经网络了</p>
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C%E5%B9%B6%E4%B8%8D%E6%98%AF%E8%B6%8A%E6%B7%B1%E8%B6%8A%E5%A5%BD.png"></p>
+<p>原因：</p>
+<p>1、当我们进行反向传播时、神经网络每一次误差项都依赖与后一层的误差项，在层数很多时很难保证每一层权值和梯度大小</p>
+<p>2、sigmoid导数最大为0.25很难传递到最后</p>
+<p><em><strong>残差网络可以解决什么问题？</strong></em></p>
+<p>1、Accuracy degradation problem（精度下降问题）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Unexpectedly, such degradation <span class="keyword">is</span> <span class="keyword">not</span> caused by overfitting, <span class="keyword">and</span> adding more layers to a suitably deep model leads to higher training error, <span class="keyword">as</span> reported <span class="keyword">in</span> [<span class="number">10</span>, <span class="number">41</span>] <span class="keyword">and</span> thoroughly verified by our experiments.</span><br><span class="line">出乎意料的是，这种退化并不是由过拟合引起的，在一个合适的深度模型中增加更多的层会导致更高的训练误差，正如文献[<span class="number">10</span>,<span class="number">41</span>]所说的，我们的实验也完全验证了这一点</span><br></pre></td></tr></table></figure>
+
+<p>过拟合是训练网络准确率很高，测试集上准确率很低，而层次很高时，是训练网络与测试网络准确率都很低。</p>
+<p>2、Gradient vanishing&#x2F;exploding problem（梯度消失&#x2F;爆炸问题）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">This problem, however, has been largely addressed by normalized initialization [<span class="number">23</span>, <span class="number">8</span>, <span class="number">36</span>, <span class="number">12</span>] <span class="keyword">and</span> intermediate normalization layers [<span class="number">16</span>], which enable networks <span class="keyword">with</span> tens of layers to start converging <span class="keyword">for</span> stochastic gradient descent (SGD) <span class="keyword">with</span> backpropagation [<span class="number">22</span>]</span><br><span class="line">然而，这个问题主要通过归一化初始化[<span class="number">23</span>、<span class="number">8</span>、<span class="number">36</span>、<span class="number">12</span>]和中间规归一化层来解决[<span class="number">16</span>]，通过反向传播使得具有数十层的神经网络能够收敛到随机梯度下降(SGD) [<span class="number">22</span>]</span><br></pre></td></tr></table></figure>
+
+<p>残差网络单元结构：F(x)&#x3D;H(x)-x,是梯度的导数在1附近，不至于梯度下降很多。</p>
+<p><img src="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/residual_1.png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ResidualBlock</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,channels</span>):</span><br><span class="line">        <span class="built_in">super</span>(ResidualBlock,self).__init__()</span><br><span class="line">        self.channels=channels</span><br><span class="line">        self.conv_1=torch.nn.Conv2d(channels,channels,kernel_size=<span class="number">3</span>,padding=<span class="number">1</span>)</span><br><span class="line">        self.conv_2=torch.nn.Conv2d(channels,channels,kernel_size=<span class="number">3</span>,padding=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        y=F.relu(self.conv_1(x))</span><br><span class="line">        y=self.conv_2(y)</span><br><span class="line">        <span class="keyword">return</span> F.relu(<span class="number">0.5</span>*(y+x))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Net</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Net,self).__init__()</span><br><span class="line">        self.conv_1=torch.nn.Conv2d(<span class="number">1</span>,<span class="number">16</span>,kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv_2 = torch.nn.Conv2d(<span class="number">16</span>, <span class="number">32</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.resid_1=ResidualBlock(<span class="number">16</span>)</span><br><span class="line">        self.resid_2=ResidualBlock(<span class="number">32</span>)</span><br><span class="line">        self.pooling=torch.nn.MaxPool2d(<span class="number">2</span>)</span><br><span class="line">        self.fc=torch.nn.Linear(<span class="number">512</span>,<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        batch_size=x.size(<span class="number">0</span>)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_1(x)))</span><br><span class="line">        x=self.resid_1(x)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_2(x)))</span><br><span class="line">        x=self.resid_2(x)</span><br><span class="line">        x=x.view(batch_size,-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> self.fc(x)</span><br><span class="line">model=Net()</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+  </entry>
+</search>

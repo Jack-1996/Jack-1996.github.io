@@ -20,25 +20,37 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="记录点滴生活">
-<meta property="og:type" content="website">
-<meta property="og:title" content="解忧杂货铺">
-<meta property="og:url" content="http://example.com/index.html">
+    <meta name="description" content="MINIST NOTE1.图像数据处理1、W * H * C转换为C * W  *H 需要变成向量使用Totensor 2、神经网络处理数据一般都在0-1之间所以需要压缩数据将255转换为1（数据标准化） Normalize 12345transform&#x3D;transforms.Compose([transforms.ToTensor(),                             t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卷积神经网络">
+<meta property="og:url" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
 <meta property="og:site_name" content="解忧杂货铺">
-<meta property="og:description" content="记录点滴生活">
+<meta property="og:description" content="MINIST NOTE1.图像数据处理1、W * H * C转换为C * W  *H 需要变成向量使用Totensor 2、神经网络处理数据一般都在0-1之间所以需要压缩数据将255转换为1（数据标准化） Normalize 12345transform&#x3D;transforms.Compose([transforms.ToTensor(),                             t">
 <meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/convolution.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/卷积结构与代码实现1.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔卷积结构与代码实现.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/googlenet%E5%8E%9F%E5%9B%A0.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/inception_1.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/inception.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C%E5%B9%B6%E4%B8%8D%E6%98%AF%E8%B6%8A%E6%B7%B1%E8%B6%8A%E5%A5%BD.png">
+<meta property="og:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/residual_1.png">
+<meta property="article:published_time" content="2022-03-31T09:47:41.000Z">
+<meta property="article:modified_time" content="2022-03-31T10:09:03.819Z">
 <meta property="article:author" content="袁叔叔">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-Hans","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/","path":"2022/03/31/卷积神经网络/","title":"卷积神经网络"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>解忧杂货铺</title>
+<title>卷积神经网络 | 解忧杂货铺</title>
   
 
 
@@ -68,7 +80,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">解忧杂货铺</h1>
+      <p class="site-title">解忧杂货铺</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">穷且志坚，不坠青云之志。</p>
@@ -128,7 +140,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -141,6 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MINIST-NOTE"><span class="nav-number">1.</span> <span class="nav-text">MINIST NOTE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">1.图像数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.2.</span> <span class="nav-text">2.卷积神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%A4%8D%E6%9D%82%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88GoogleNet%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">3、复杂卷积神经网络（GoogleNet模型)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%A4%8D%E6%9D%82%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88Residual-net%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">4、复杂卷积神经网络（Residual net模型)</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -192,16 +205,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -215,13 +229,13 @@
     </span>
     
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 解忧杂货铺">
+      <meta itemprop="name" content="卷积神经网络 | 解忧杂货铺">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/31/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">卷积神经网络</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          卷积神经网络
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -254,7 +268,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="MINIST-NOTE"><a href="#MINIST-NOTE" class="headerlink" title="MINIST NOTE"></a>MINIST NOTE</h1><h2 id="1-图像数据处理"><a href="#1-图像数据处理" class="headerlink" title="1.图像数据处理"></a>1.图像数据处理</h2><p>1、W * H * C转换为C * W  *H 需要变成向量使用Totensor</p>
+        <h1 id="MINIST-NOTE"><a href="#MINIST-NOTE" class="headerlink" title="MINIST NOTE"></a>MINIST NOTE</h1><h2 id="1-图像数据处理"><a href="#1-图像数据处理" class="headerlink" title="1.图像数据处理"></a>1.图像数据处理</h2><p>1、W * H * C转换为C * W  *H 需要变成向量使用Totensor</p>
 <p>2、神经网络处理数据一般都在0-1之间所以需要压缩数据将255转换为1（数据标准化） Normalize</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">transform=transforms.Compose([transforms.ToTensor(),</span><br><span class="line">                             transforms.Normalize((<span class="number">0.1307</span>,),(<span class="number">0.3081</span>,))])</span><br><span class="line">train_dataset=datasets.MNIST(root=<span class="string">&#x27;D:/Anaconda3/Lib/site-packages/torchvision/datasets&#x27;</span>,train=<span class="literal">True</span>,download=<span class="literal">True</span>,</span><br><span class="line">                             transform=transform)</span><br><span class="line">train_loader=DataLoader(train_dataset,shuffle=<span class="literal">True</span>,batch_size=<span class="number">64</span>)</span><br></pre></td></tr></table></figure>
 
@@ -339,7 +353,6 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Net</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Net,self).__init__()</span><br><span class="line">        self.conv_1=torch.nn.Conv2d(<span class="number">1</span>,<span class="number">16</span>,kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv_2 = torch.nn.Conv2d(<span class="number">16</span>, <span class="number">32</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.resid_1=ResidualBlock(<span class="number">16</span>)</span><br><span class="line">        self.resid_2=ResidualBlock(<span class="number">32</span>)</span><br><span class="line">        self.pooling=torch.nn.MaxPool2d(<span class="number">2</span>)</span><br><span class="line">        self.fc=torch.nn.Linear(<span class="number">512</span>,<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,x</span>):</span><br><span class="line">        batch_size=x.size(<span class="number">0</span>)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_1(x)))</span><br><span class="line">        x=self.resid_1(x)</span><br><span class="line">        x=F.relu(self.pooling(self.conv_2(x)))</span><br><span class="line">        x=self.resid_2(x)</span><br><span class="line">        x=x.view(batch_size,-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> self.fc(x)</span><br><span class="line">model=Net()</span><br></pre></td></tr></table></figure>
 
 
-      
     </div>
 
     
@@ -347,206 +360,22 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/31/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/" rel="prev" title="神经网络笔记">
+                  <i class="fa fa-chevron-left"></i> 神经网络笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/31/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="袁叔叔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="解忧杂货铺">
-      <meta itemprop="description" content="记录点滴生活">
-    </span>
-    
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 解忧杂货铺">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/31/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">神经网络笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2022-03-31 12:53:32 / Modified: 22:44:56" itemprop="dateCreated datePublished" datetime="2022-03-31T12:53:32+08:00">2022-03-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E5%85%B7/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="神经网络笔记"><a href="#神经网络笔记" class="headerlink" title="神经网络笔记"></a>神经网络笔记</h1><h3 id="1、神经网络模型概括："><a href="#1、神经网络模型概括：" class="headerlink" title="1、神经网络模型概括："></a>1、神经网络模型概括：</h3><p>1、主要分为4个部分分别是：1、Dataset  2、Model 3、Training 4、inferring</p>
-<p>损失函数$loss&#x3D;(y_x-y)^2$</p>
-<p>权重:w</p>
-<p>权重w一般与模型中的w有关，$y&#x3D;x*w+b%+$</p>
-<p>梯度：$\alpha cost&#x2F;\alpha w$</p>
-<p>更新：$w&#x3D;w-\sigma\alpha cost&#x2F;\alpha w$,其中$\sigma$为学习率</p>
-<p>2、神经网络是在不断求最小的损失值，之后权重随着梯度不断减小以达到最符合模型的函数</p>
-<p><strong>神经网络中的“学习”，是指从训练数据中自动获取“最优权重”的过程。学习的目的就是以该损失函数为基准，找出能使他的值达到最小权重的参数</strong></p>
-<p>1）神经网络——————最小损失函数值</p>
-<p>2）最小损失函数值——————最优参数（权重和偏置）</p>
-<p>3）寻找使损失函数最小值的参数——————参数的导数（梯度）</p>
-<p>4）并且用这个导数作为指引——————更新参数值gradient</p>
-<p>5）反向传播是计算loss函数对每个w的梯度，然后更新w来进行梯度下降，降低loss</p>
-<p>当梯度＞0时，w负方向，loss减下</p>
-<p>当梯度＜0时，w正方向，loss减小</p>
-<p><img src="/2022/03/31/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/30/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="袁叔叔">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="解忧杂货铺">
-      <meta itemprop="description" content="记录点滴生活">
-    </span>
-    
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 解忧杂货铺">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/30/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-03-30 09:38:25" itemprop="dateCreated datePublished" datetime="2022-03-30T09:38:25+08:00">2022-03-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-03-31 11:22:24" itemprop="dateModified" datetime="2022-03-31T11:22:24+08:00">2022-03-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
