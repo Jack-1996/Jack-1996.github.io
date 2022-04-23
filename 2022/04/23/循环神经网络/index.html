@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="循环神经网络1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等RNN cell主要结构： ![](E:\笔记\图片\RNN cell.png) Ht&#x3D;cell(X1+H0) 2、使用RNN而不使用RNN cell12345678910cell&#x3D;torch.nn.RNN(input_size&#x3D;input_size,hidden_size&#x3D;hidden_size,nym_la">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环神经网络">
+<meta property="og:url" content="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="解忧杂货铺">
+<meta property="og:description" content="循环神经网络1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等RNN cell主要结构： ![](E:\笔记\图片\RNN cell.png) Ht&#x3D;cell(X1+H0) 2、使用RNN而不使用RNN cell12345678910cell&#x3D;torch.nn.RNN(input_size&#x3D;input_size,hidden_size&#x3D;hidden_size,nym_la">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记/图片/自然语言处理.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记/图片/one-hot编码.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记/图片/Embedding.png">
+<meta property="article:published_time" content="2022-04-23T03:40:53.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:41:46.695Z">
+<meta property="article:author" content="袁叔叔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记/图片/自然语言处理.png">
+
+
+<link rel="canonical" href="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/","path":"2022/04/23/循环神经网络/","title":"循环神经网络"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>循环神经网络 | 解忧杂货铺</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">解忧杂货铺</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">穷且志坚，不坠青云之志。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/home/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">循环神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E4%B8%BB%E8%A6%81%E5%A4%84%E7%90%86%E5%85%B7%E6%9C%89%E5%BA%8F%E5%88%97%E5%85%B3%E7%B3%BB%E7%9A%84%E6%95%B0%E6%8D%AE%E3%80%82%E4%BE%8B%E5%A6%82%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%8C%E8%82%A1%E7%A5%A8%EF%BC%8C%E5%A4%A9%E6%B0%94%E6%95%B0%E6%8D%AE%E7%AD%89"><span class="nav-number">1.1.</span> <span class="nav-text">1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E4%BD%BF%E7%94%A8RNN%E8%80%8C%E4%B8%8D%E4%BD%BF%E7%94%A8RNN-cell"><span class="nav-number">1.2.</span> <span class="nav-text">2、使用RNN而不使用RNN cell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81RNN%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA"><span class="nav-number">1.3.</span> <span class="nav-text">3、RNN标准输入与输出</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">袁叔叔</p>
+  <div class="site-description" itemprop="description">记录点滴生活</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="袁叔叔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="解忧杂货铺">
+      <meta itemprop="description" content="记录点滴生活">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="循环神经网络 | 解忧杂货铺">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          循环神经网络
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-23 11:40:53 / Modified: 11:41:46" itemprop="dateCreated datePublished" datetime="2022-04-23T11:40:53+08:00">2022-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="循环神经网络"><a href="#循环神经网络" class="headerlink" title="循环神经网络"></a>循环神经网络</h1><h2 id="1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等"><a href="#1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等" class="headerlink" title="1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等"></a>1、主要处理具有序列关系的数据。例如自然语言处理，股票，天气数据等</h2><p>RNN cell主要结构：</p>
+<p>![](E:\笔记\图片\RNN cell.png)</p>
+<p>Ht&#x3D;cell(X1+H0)</p>
+<h2 id="2、使用RNN而不使用RNN-cell"><a href="#2、使用RNN而不使用RNN-cell" class="headerlink" title="2、使用RNN而不使用RNN cell"></a>2、使用RNN而不使用RNN cell</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cell=torch.nn.RNN(input_size=input_size,hidden_size=hidden_size,nym_layers=num_layers)</span><br><span class="line"><span class="comment">#num_layers代表RNN的层数</span></span><br><span class="line">out,hidden=cell(inputs,hidden)</span><br><span class="line"><span class="comment">#输入hidden代表h0</span></span><br><span class="line"><span class="comment">#inputs代表输入（x1---xn)</span></span><br><span class="line"><span class="comment">#输出hidden代表hn</span></span><br><span class="line"><span class="comment">#序列就是一句话，batch就是我们把这句话分成几部分</span></span><br><span class="line"><span class="comment">#inputs of shape(seqSize,batch,input_size)，batch也是输入维度，也就是输入features的数目，seq_len是输入样本的个数</span></span><br><span class="line"><span class="comment">#output of shape(seqLen,batch,hidden_size)</span></span><br><span class="line"><span class="comment">#hidden of shape(numLayers,batch,hidden_size)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3、RNN标准输入与输出"><a href="#3、RNN标准输入与输出" class="headerlink" title="3、RNN标准输入与输出"></a>3、RNN标准输入与输出</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">batch_size=<span class="number">1</span></span><br><span class="line">seq_len=<span class="number">3</span></span><br><span class="line">input_size=<span class="number">4</span></span><br><span class="line">hidden_size=<span class="number">2</span></span><br><span class="line">num_layers=<span class="number">1</span></span><br><span class="line">cell=torch.nn.RNN(input_size=input_size,hidden_size=hidden_size,num_layers=num_layers)</span><br><span class="line">inputs=torch.randn(seq_len,batch_size,input_size)</span><br><span class="line">hidden=torch.zeros(num_layers,batch_size,hidden_size)</span><br><span class="line">out,hidden=cell(inputs,hidden)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;output size&#x27;</span>,out.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;output&#x27;</span>,out)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;hidden size&#x27;</span>,hidden.shape)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;hidden&#x27;</span>,hidden)</span><br></pre></td></tr></table></figure>
+
+<p>4、RNN在自然语言处理中如何使用的</p>
+<p><img src="/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记\图片\自然语言处理.png"></p>
+<p>1）第一步字符用向量化来表示————one-hot编码</p>
+<p><img src="/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记\图片\one-hot编码.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">input_size=<span class="number">4</span></span><br><span class="line">hidden_size=<span class="number">4</span></span><br><span class="line">batch_size=<span class="number">1</span></span><br><span class="line">num_layers=<span class="number">1</span></span><br><span class="line">seq_len=<span class="number">5</span></span><br><span class="line">idx2char=[<span class="string">&#x27;e&#x27;</span>,<span class="string">&#x27;h&#x27;</span>,<span class="string">&#x27;l&#x27;</span>,<span class="string">&#x27;o&#x27;</span>]</span><br><span class="line">x_data=[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">y_data=[<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>]</span><br><span class="line">one_hot_lookup=[[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">                [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">                [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">                [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]]</span><br><span class="line">x_one_hot=[one_hot_lookup[x] <span class="keyword">for</span> x <span class="keyword">in</span> x_data ]</span><br><span class="line"><span class="comment">#seq*input_size的维度</span></span><br><span class="line">inputs=torch.Tensor(x_one_hot).view(seq_len,batch_size,input_size)</span><br><span class="line">labels=torch.LongTensor(y_data)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,input_size,hidden_size,batch_size,num_layers</span>):</span><br><span class="line">        <span class="built_in">super</span>(Model,self).__init__()</span><br><span class="line">        self.num_layers=num_layers</span><br><span class="line">        self.input_size=input_size</span><br><span class="line">        self.batch_size=batch_size</span><br><span class="line">        self.hidden_size=hidden_size</span><br><span class="line">        self.rnn=torch.nn.RNN(input_size=self.input_size,hidden_size=self.hidden_size,num_layers=self.num_layers)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,<span class="built_in">input</span></span>):</span><br><span class="line">        hidden=torch.zeros(self.num_layers,self.batch_size,self.hidden_size)</span><br><span class="line">        out,_=self.rnn(<span class="built_in">input</span>,hidden)</span><br><span class="line">        <span class="keyword">return</span> out.view(-<span class="number">1</span>,self.hidden_size)</span><br><span class="line">net=Model(input_size,hidden_size,batch_size,num_layers)</span><br><span class="line"></span><br><span class="line">criterion=torch.nn.CrossEntropyLoss()</span><br><span class="line">optimizer=torch.optim.Adam(net.parameters(),lr=<span class="number">0.05</span>)</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">20</span>):</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    outputs=net(inputs)</span><br><span class="line">    loss=criterion(outputs,labels)</span><br><span class="line">    loss.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line">    _,idx=outputs.<span class="built_in">max</span>(dim=<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;predicted:&#x27;</span>,<span class="string">&#x27;&#x27;</span>.join([idx2char[x]<span class="keyword">for</span> x <span class="keyword">in</span> idx]),end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;, Epoch [%d/20] loss=%.3f&#x27;</span>%(epoch+<span class="number">1</span>,loss.item()))</span><br></pre></td></tr></table></figure>
+
+<p>2)Embedding————将独热编码中的稀疏数据转换为紧凑数据</p>
+<img src="/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/笔记\图片\Embedding.png" style="zoom:50%;">
+
+<p>2）parameters:1）input的one-hot的维度，2）embedding dim</p>
+<p>输入要求长整型，输出与（输入，embedding_dim)有关</p>
+<p>3）使用embdding会使用线性层，进行全连接</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.Linear(in_features,out_features,bias=true)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将embedding放入编程在那里改变？</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(Model,self).__init__()</span><br><span class="line">        self.emb=torch.nn.Embedding(input_size,embedding_size)</span><br><span class="line">        self.rnn=torch.nn.RNN(input_size=embedding_size,hidden_size=hidden_size,num_layers=num_layers,batch_first=<span class="literal">True</span>)</span><br><span class="line">        self.fc = torch.nn.Linear(hidden_size, num_class)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,<span class="built_in">input</span></span>):</span><br><span class="line">        hidden=torch.zeros(num_layers,<span class="built_in">input</span>.size(<span class="number">0</span>),hidden_size)</span><br><span class="line">        <span class="built_in">input</span>=self.emb(<span class="built_in">input</span>)</span><br><span class="line">        out,_=self.rnn(<span class="built_in">input</span>,hidden)</span><br><span class="line">        out=self.fc(out)</span><br><span class="line">        <span class="keyword">return</span> out.view(-<span class="number">1</span>,num_class)</span><br><span class="line">net=Model()</span><br><span class="line"><span class="comment">#在数据输入部分也有相应改变</span></span><br><span class="line">input_size=<span class="number">4</span></span><br><span class="line">hidden_size=<span class="number">4</span></span><br><span class="line">batch_size=<span class="number">1</span></span><br><span class="line">num_layers=<span class="number">1</span></span><br><span class="line">embdding_size=<span class="number">8</span></span><br><span class="line">seq_len=<span class="number">5</span></span><br><span class="line">idx2char=[<span class="string">&#x27;e&#x27;</span>,<span class="string">&#x27;h&#x27;</span>,<span class="string">&#x27;l&#x27;</span>,<span class="string">&#x27;o&#x27;</span>]</span><br><span class="line">x_data=[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">y_data=[<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>]</span><br><span class="line">inputs=torch.LongTensor(x_data)</span><br><span class="line">labels=torch.LongTensor(y_data)</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="正则表达式">
+                  <i class="fa fa-chevron-left"></i> 正则表达式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-gru/" rel="next" title="循环神经网络-gru">
+                  循环神经网络-gru <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">袁叔叔</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

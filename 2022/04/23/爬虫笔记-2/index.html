@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="爬虫笔记 爬虫学的好，牢饭吃的早（2）1、请求模块的使用 首先安装request库 1pip install requests    用途 用于模拟请求网页链接，从而获取数据。  基本用法   1234567import requestsr &#x3D; requests.get(&amp;#x27;https:&#x2F;&#x2F;www.baidu.com&#x2F;&amp;#x27;)print(type(r.status_code), r.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫笔记—2">
+<meta property="og:url" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/index.html">
+<meta property="og:site_name" content="解忧杂货铺">
+<meta property="og:description" content="爬虫笔记 爬虫学的好，牢饭吃的早（2）1、请求模块的使用 首先安装request库 1pip install requests    用途 用于模拟请求网页链接，从而获取数据。  基本用法   1234567import requestsr &#x3D; requests.get(&amp;#x27;https:&#x2F;&#x2F;www.baidu.com&#x2F;&amp;#x27;)print(type(r.status_code), r.">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232352e706e67.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232362e706e67.png">
+<meta property="article:published_time" content="2022-04-23T03:16:30.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:30:22.403Z">
+<meta property="article:author" content="袁叔叔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232352e706e67.png">
+
+
+<link rel="canonical" href="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/","path":"2022/04/23/爬虫笔记-2/","title":"爬虫笔记—2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>爬虫笔记—2 | 解忧杂货铺</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">解忧杂货铺</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">穷且志坚，不坠青云之志。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/home/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-%E7%88%AC%E8%99%AB%E5%AD%A6%E7%9A%84%E5%A5%BD%EF%BC%8C%E7%89%A2%E9%A5%AD%E5%90%83%E7%9A%84%E6%97%A9%EF%BC%882%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">爬虫笔记 爬虫学的好，牢饭吃的早（2）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1、请求模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#post%E8%AF%B7%E6%B1%82"><span class="nav-number">1.1.0.0.1.</span> <span class="nav-text">post请求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.0.0.2.</span> <span class="nav-text">其他请求方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">高级用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.0.1.1.</span> <span class="nav-text">上传文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookies"><span class="nav-number">1.1.0.1.2.</span> <span class="nav-text">Cookies</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E7%BB%B4%E6%8C%81"><span class="nav-number">1.1.0.1.3.</span> <span class="nav-text">会话维持</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">袁叔叔</p>
+  <div class="site-description" itemprop="description">记录点滴生活</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="袁叔叔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="解忧杂货铺">
+      <meta itemprop="description" content="记录点滴生活">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="爬虫笔记—2 | 解忧杂货铺">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          爬虫笔记—2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-23 11:16:30 / Modified: 11:30:22" itemprop="dateCreated datePublished" datetime="2022-04-23T11:16:30+08:00">2022-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">爬虫笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="爬虫笔记-爬虫学的好，牢饭吃的早（2）"><a href="#爬虫笔记-爬虫学的好，牢饭吃的早（2）" class="headerlink" title="爬虫笔记 爬虫学的好，牢饭吃的早（2）"></a>爬虫笔记 爬虫学的好，牢饭吃的早（2）</h1><h2 id="1、请求模块的使用"><a href="#1、请求模块的使用" class="headerlink" title="1、请求模块的使用"></a>1、请求模块的使用</h2><ul>
+<li><p>首先安装request库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>用途</p>
+<p>用于模拟请求网页链接，从而获取数据。</p>
+</li>
+<li><p>基本用法</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">&#x27;https://www.baidu.com/&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(r.status_code), r.status_code)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(r.headers), r.headers)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(r.cookies), r.cookies)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(r.url), r.url)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(r.history), r.history)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response.cookies：网页的cookies</li>
+<li>response.text：网页的文本内容</li>
+<li>response.status_code：网页的状态码</li>
+<li>response.history：请求历史</li>
+<li>response.url：网页URL</li>
+</ul>
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;int&#x27;</span>&gt; <span class="number">200</span></span><br><span class="line">...</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;str&#x27;</span>&gt; https://www.baidu.com/</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;list&#x27;</span>&gt; []</span><br></pre></td></tr></table></figure>
+
+<p>Status Code 常用来判断请求是否成功，Requests 还提供了一个内置的 Status Code 查询对象 requests.codes。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;http://www.baidu.com&#x27;</span>)</span><br><span class="line"></span><br><span class="line">exit() <span class="keyword">if</span> <span class="keyword">not</span> r.status_code == requests.codes.ok <span class="keyword">else</span> <span class="built_in">print</span>(<span class="string">&quot;请求成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>返回码和相应的查询条件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Informational.</span></span><br><span class="line"><span class="number">100</span>: (<span class="string">&#x27;continue&#x27;</span>,),</span><br><span class="line"><span class="number">101</span>: (<span class="string">&#x27;switching_protocols&#x27;</span>,),</span><br><span class="line"><span class="number">102</span>: (<span class="string">&#x27;processing&#x27;</span>,),</span><br><span class="line"><span class="number">103</span>: (<span class="string">&#x27;checkpoint&#x27;</span>,),</span><br><span class="line"><span class="number">122</span>: (<span class="string">&#x27;uri_too_long&#x27;</span>, <span class="string">&#x27;request_uri_too_long&#x27;</span>),</span><br><span class="line"><span class="number">200</span>: (<span class="string">&#x27;ok&#x27;</span>, <span class="string">&#x27;okay&#x27;</span>, <span class="string">&#x27;all_ok&#x27;</span>, <span class="string">&#x27;all_okay&#x27;</span>, <span class="string">&#x27;all_good&#x27;</span>, <span class="string">&#x27;\\o/&#x27;</span>, <span class="string">&#x27;✓&#x27;</span>),</span><br><span class="line"><span class="number">201</span>: (<span class="string">&#x27;created&#x27;</span>,),</span><br><span class="line"><span class="number">202</span>: (<span class="string">&#x27;accepted&#x27;</span>,),</span><br><span class="line"><span class="number">203</span>: (<span class="string">&#x27;non_authoritative_info&#x27;</span>, <span class="string">&#x27;non_authoritative_information&#x27;</span>),</span><br><span class="line"><span class="number">204</span>: (<span class="string">&#x27;no_content&#x27;</span>,),</span><br><span class="line"><span class="number">205</span>: (<span class="string">&#x27;reset_content&#x27;</span>, <span class="string">&#x27;reset&#x27;</span>),</span><br><span class="line"><span class="number">206</span>: (<span class="string">&#x27;partial_content&#x27;</span>, <span class="string">&#x27;partial&#x27;</span>),</span><br><span class="line"><span class="number">207</span>: (<span class="string">&#x27;multi_status&#x27;</span>, <span class="string">&#x27;multiple_status&#x27;</span>, <span class="string">&#x27;multi_stati&#x27;</span>, <span class="string">&#x27;multiple_stati&#x27;</span>),</span><br><span class="line"><span class="number">208</span>: (<span class="string">&#x27;already_reported&#x27;</span>,),</span><br><span class="line"><span class="number">226</span>: (<span class="string">&#x27;im_used&#x27;</span>,),</span><br><span class="line"></span><br><span class="line"><span class="comment"># Redirection.</span></span><br><span class="line"><span class="number">300</span>: (<span class="string">&#x27;multiple_choices&#x27;</span>,),</span><br><span class="line"><span class="number">301</span>: (<span class="string">&#x27;moved_permanently&#x27;</span>, <span class="string">&#x27;moved&#x27;</span>, <span class="string">&#x27;\\o-&#x27;</span>),</span><br><span class="line"><span class="number">302</span>: (<span class="string">&#x27;found&#x27;</span>,),</span><br><span class="line"><span class="number">303</span>: (<span class="string">&#x27;see_other&#x27;</span>, <span class="string">&#x27;other&#x27;</span>),</span><br><span class="line"><span class="number">304</span>: (<span class="string">&#x27;not_modified&#x27;</span>,),</span><br><span class="line"><span class="number">305</span>: (<span class="string">&#x27;use_proxy&#x27;</span>,),</span><br><span class="line"><span class="number">306</span>: (<span class="string">&#x27;switch_proxy&#x27;</span>,),</span><br><span class="line"><span class="number">307</span>: (<span class="string">&#x27;temporary_redirect&#x27;</span>, <span class="string">&#x27;temporary_moved&#x27;</span>, <span class="string">&#x27;temporary&#x27;</span>),</span><br><span class="line"><span class="number">308</span>: (<span class="string">&#x27;permanent_redirect&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;resume_incomplete&#x27;</span>, <span class="string">&#x27;resume&#x27;</span>,), <span class="comment"># These 2 to be removed in 3.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Client Error.</span></span><br><span class="line"><span class="number">400</span>: (<span class="string">&#x27;bad_request&#x27;</span>, <span class="string">&#x27;bad&#x27;</span>),</span><br><span class="line"><span class="number">401</span>: (<span class="string">&#x27;unauthorized&#x27;</span>,),</span><br><span class="line"><span class="number">402</span>: (<span class="string">&#x27;payment_required&#x27;</span>, <span class="string">&#x27;payment&#x27;</span>),</span><br><span class="line"><span class="number">403</span>: (<span class="string">&#x27;forbidden&#x27;</span>,),</span><br><span class="line"><span class="number">404</span>: (<span class="string">&#x27;not_found&#x27;</span>, <span class="string">&#x27;-o-&#x27;</span>),</span><br><span class="line"><span class="number">405</span>: (<span class="string">&#x27;method_not_allowed&#x27;</span>, <span class="string">&#x27;not_allowed&#x27;</span>),</span><br><span class="line"><span class="number">406</span>: (<span class="string">&#x27;not_acceptable&#x27;</span>,),</span><br><span class="line"><span class="number">407</span>: (<span class="string">&#x27;proxy_authentication_required&#x27;</span>, <span class="string">&#x27;proxy_auth&#x27;</span>, <span class="string">&#x27;proxy_authentication&#x27;</span>),</span><br><span class="line"><span class="number">408</span>: (<span class="string">&#x27;request_timeout&#x27;</span>, <span class="string">&#x27;timeout&#x27;</span>),</span><br><span class="line"><span class="number">409</span>: (<span class="string">&#x27;conflict&#x27;</span>,),</span><br><span class="line"><span class="number">410</span>: (<span class="string">&#x27;gone&#x27;</span>,),</span><br><span class="line"><span class="number">411</span>: (<span class="string">&#x27;length_required&#x27;</span>,),</span><br><span class="line"><span class="number">412</span>: (<span class="string">&#x27;precondition_failed&#x27;</span>, <span class="string">&#x27;precondition&#x27;</span>),</span><br><span class="line"><span class="number">413</span>: (<span class="string">&#x27;request_entity_too_large&#x27;</span>,),</span><br><span class="line"><span class="number">414</span>: (<span class="string">&#x27;request_uri_too_large&#x27;</span>,),</span><br><span class="line"><span class="number">415</span>: (<span class="string">&#x27;unsupported_media_type&#x27;</span>, <span class="string">&#x27;unsupported_media&#x27;</span>, <span class="string">&#x27;media_type&#x27;</span>),</span><br><span class="line"><span class="number">416</span>: (<span class="string">&#x27;requested_range_not_satisfiable&#x27;</span>, <span class="string">&#x27;requested_range&#x27;</span>, <span class="string">&#x27;range_not_satisfiable&#x27;</span>),</span><br><span class="line"><span class="number">417</span>: (<span class="string">&#x27;expectation_failed&#x27;</span>,),</span><br><span class="line"><span class="number">418</span>: (<span class="string">&#x27;im_a_teapot&#x27;</span>, <span class="string">&#x27;teapot&#x27;</span>, <span class="string">&#x27;i_am_a_teapot&#x27;</span>),</span><br><span class="line"><span class="number">421</span>: (<span class="string">&#x27;misdirected_request&#x27;</span>,),</span><br><span class="line"><span class="number">422</span>: (<span class="string">&#x27;unprocessable_entity&#x27;</span>, <span class="string">&#x27;unprocessable&#x27;</span>),</span><br><span class="line"><span class="number">423</span>: (<span class="string">&#x27;locked&#x27;</span>,),</span><br><span class="line"><span class="number">424</span>: (<span class="string">&#x27;failed_dependency&#x27;</span>, <span class="string">&#x27;dependency&#x27;</span>),</span><br><span class="line"><span class="number">425</span>: (<span class="string">&#x27;unordered_collection&#x27;</span>, <span class="string">&#x27;unordered&#x27;</span>),</span><br><span class="line"><span class="number">426</span>: (<span class="string">&#x27;upgrade_required&#x27;</span>, <span class="string">&#x27;upgrade&#x27;</span>),</span><br><span class="line"><span class="number">428</span>: (<span class="string">&#x27;precondition_required&#x27;</span>, <span class="string">&#x27;precondition&#x27;</span>),</span><br><span class="line"><span class="number">429</span>: (<span class="string">&#x27;too_many_requests&#x27;</span>, <span class="string">&#x27;too_many&#x27;</span>),</span><br><span class="line"><span class="number">431</span>: (<span class="string">&#x27;header_fields_too_large&#x27;</span>, <span class="string">&#x27;fields_too_large&#x27;</span>),</span><br><span class="line"><span class="number">444</span>: (<span class="string">&#x27;no_response&#x27;</span>, <span class="string">&#x27;none&#x27;</span>),</span><br><span class="line"><span class="number">449</span>: (<span class="string">&#x27;retry_with&#x27;</span>, <span class="string">&#x27;retry&#x27;</span>),</span><br><span class="line"><span class="number">450</span>: (<span class="string">&#x27;blocked_by_windows_parental_controls&#x27;</span>, <span class="string">&#x27;parental_controls&#x27;</span>),</span><br><span class="line"><span class="number">451</span>: (<span class="string">&#x27;unavailable_for_legal_reasons&#x27;</span>, <span class="string">&#x27;legal_reasons&#x27;</span>),</span><br><span class="line"><span class="number">499</span>: (<span class="string">&#x27;client_closed_request&#x27;</span>,),</span><br><span class="line"></span><br><span class="line"><span class="comment"># Server Error.</span></span><br><span class="line"><span class="number">500</span>: (<span class="string">&#x27;internal_server_error&#x27;</span>, <span class="string">&#x27;server_error&#x27;</span>, <span class="string">&#x27;/o\\&#x27;</span>, <span class="string">&#x27;✗&#x27;</span>),</span><br><span class="line"><span class="number">501</span>: (<span class="string">&#x27;not_implemented&#x27;</span>,),</span><br><span class="line"><span class="number">502</span>: (<span class="string">&#x27;bad_gateway&#x27;</span>,),</span><br><span class="line"><span class="number">503</span>: (<span class="string">&#x27;service_unavailable&#x27;</span>, <span class="string">&#x27;unavailable&#x27;</span>),</span><br><span class="line"><span class="number">504</span>: (<span class="string">&#x27;gateway_timeout&#x27;</span>,),</span><br><span class="line"><span class="number">505</span>: (<span class="string">&#x27;http_version_not_supported&#x27;</span>, <span class="string">&#x27;http_version&#x27;</span>),</span><br><span class="line"><span class="number">506</span>: (<span class="string">&#x27;variant_also_negotiates&#x27;</span>,),</span><br><span class="line"><span class="number">507</span>: (<span class="string">&#x27;insufficient_storage&#x27;</span>,),</span><br><span class="line"><span class="number">509</span>: (<span class="string">&#x27;bandwidth_limit_exceeded&#x27;</span>, <span class="string">&#x27;bandwidth&#x27;</span>),</span><br><span class="line"><span class="number">510</span>: (<span class="string">&#x27;not_extended&#x27;</span>,),</span><br><span class="line"><span class="number">511</span>: (<span class="string">&#x27;network_authentication_required&#x27;</span>, <span class="string">&#x27;network_auth&#x27;</span>, <span class="string">&#x27;network_authentication&#x27;</span>)<span class="comment"># Informational.</span></span><br><span class="line"><span class="number">100</span>: (<span class="string">&#x27;continue&#x27;</span>,),</span><br><span class="line"><span class="number">101</span>: (<span class="string">&#x27;switching_protocols&#x27;</span>,),</span><br><span class="line"><span class="number">102</span>: (<span class="string">&#x27;processing&#x27;</span>,),</span><br><span class="line"><span class="number">103</span>: (<span class="string">&#x27;checkpoint&#x27;</span>,),</span><br><span class="line"><span class="number">122</span>: (<span class="string">&#x27;uri_too_long&#x27;</span>, <span class="string">&#x27;request_uri_too_long&#x27;</span>),</span><br><span class="line"><span class="number">200</span>: (<span class="string">&#x27;ok&#x27;</span>, <span class="string">&#x27;okay&#x27;</span>, <span class="string">&#x27;all_ok&#x27;</span>, <span class="string">&#x27;all_okay&#x27;</span>, <span class="string">&#x27;all_good&#x27;</span>, <span class="string">&#x27;\\o/&#x27;</span>, <span class="string">&#x27;✓&#x27;</span>),</span><br><span class="line"><span class="number">201</span>: (<span class="string">&#x27;created&#x27;</span>,),</span><br><span class="line"><span class="number">202</span>: (<span class="string">&#x27;accepted&#x27;</span>,),</span><br><span class="line"><span class="number">203</span>: (<span class="string">&#x27;non_authoritative_info&#x27;</span>, <span class="string">&#x27;non_authoritative_information&#x27;</span>),</span><br><span class="line"><span class="number">204</span>: (<span class="string">&#x27;no_content&#x27;</span>,),</span><br><span class="line"><span class="number">205</span>: (<span class="string">&#x27;reset_content&#x27;</span>, <span class="string">&#x27;reset&#x27;</span>),</span><br><span class="line"><span class="number">206</span>: (<span class="string">&#x27;partial_content&#x27;</span>, <span class="string">&#x27;partial&#x27;</span>),</span><br><span class="line"><span class="number">207</span>: (<span class="string">&#x27;multi_status&#x27;</span>, <span class="string">&#x27;multiple_status&#x27;</span>, <span class="string">&#x27;multi_stati&#x27;</span>, <span class="string">&#x27;multiple_stati&#x27;</span>),</span><br><span class="line"><span class="number">208</span>: (<span class="string">&#x27;already_reported&#x27;</span>,),</span><br><span class="line"><span class="number">226</span>: (<span class="string">&#x27;im_used&#x27;</span>,),</span><br><span class="line"></span><br><span class="line"><span class="comment"># Redirection.</span></span><br><span class="line"><span class="number">300</span>: (<span class="string">&#x27;multiple_choices&#x27;</span>,),</span><br><span class="line"><span class="number">301</span>: (<span class="string">&#x27;moved_permanently&#x27;</span>, <span class="string">&#x27;moved&#x27;</span>, <span class="string">&#x27;\\o-&#x27;</span>),</span><br><span class="line"><span class="number">302</span>: (<span class="string">&#x27;found&#x27;</span>,),</span><br><span class="line"><span class="number">303</span>: (<span class="string">&#x27;see_other&#x27;</span>, <span class="string">&#x27;other&#x27;</span>),</span><br><span class="line"><span class="number">304</span>: (<span class="string">&#x27;not_modified&#x27;</span>,),</span><br><span class="line"><span class="number">305</span>: (<span class="string">&#x27;use_proxy&#x27;</span>,),</span><br><span class="line"><span class="number">306</span>: (<span class="string">&#x27;switch_proxy&#x27;</span>,),</span><br><span class="line"><span class="number">307</span>: (<span class="string">&#x27;temporary_redirect&#x27;</span>, <span class="string">&#x27;temporary_moved&#x27;</span>, <span class="string">&#x27;temporary&#x27;</span>),</span><br><span class="line"><span class="number">308</span>: (<span class="string">&#x27;permanent_redirect&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;resume_incomplete&#x27;</span>, <span class="string">&#x27;resume&#x27;</span>,), <span class="comment"># These 2 to be removed in 3.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Client Error.</span></span><br><span class="line"><span class="number">400</span>: (<span class="string">&#x27;bad_request&#x27;</span>, <span class="string">&#x27;bad&#x27;</span>),</span><br><span class="line"><span class="number">401</span>: (<span class="string">&#x27;unauthorized&#x27;</span>,),</span><br><span class="line"><span class="number">402</span>: (<span class="string">&#x27;payment_required&#x27;</span>, <span class="string">&#x27;payment&#x27;</span>),</span><br><span class="line"><span class="number">403</span>: (<span class="string">&#x27;forbidden&#x27;</span>,),</span><br><span class="line"><span class="number">404</span>: (<span class="string">&#x27;not_found&#x27;</span>, <span class="string">&#x27;-o-&#x27;</span>),</span><br><span class="line"><span class="number">405</span>: (<span class="string">&#x27;method_not_allowed&#x27;</span>, <span class="string">&#x27;not_allowed&#x27;</span>),</span><br><span class="line"><span class="number">406</span>: (<span class="string">&#x27;not_acceptable&#x27;</span>,),</span><br><span class="line"><span class="number">407</span>: (<span class="string">&#x27;proxy_authentication_required&#x27;</span>, <span class="string">&#x27;proxy_auth&#x27;</span>, <span class="string">&#x27;proxy_authentication&#x27;</span>),</span><br><span class="line"><span class="number">408</span>: (<span class="string">&#x27;request_timeout&#x27;</span>, <span class="string">&#x27;timeout&#x27;</span>),</span><br><span class="line"><span class="number">409</span>: (<span class="string">&#x27;conflict&#x27;</span>,),</span><br><span class="line"><span class="number">410</span>: (<span class="string">&#x27;gone&#x27;</span>,),</span><br><span class="line"><span class="number">411</span>: (<span class="string">&#x27;length_required&#x27;</span>,),</span><br><span class="line"><span class="number">412</span>: (<span class="string">&#x27;precondition_failed&#x27;</span>, <span class="string">&#x27;precondition&#x27;</span>),</span><br><span class="line"><span class="number">413</span>: (<span class="string">&#x27;request_entity_too_large&#x27;</span>,),</span><br><span class="line"><span class="number">414</span>: (<span class="string">&#x27;request_uri_too_large&#x27;</span>,),</span><br><span class="line"><span class="number">415</span>: (<span class="string">&#x27;unsupported_media_type&#x27;</span>, <span class="string">&#x27;unsupported_media&#x27;</span>, <span class="string">&#x27;media_type&#x27;</span>),</span><br><span class="line"><span class="number">416</span>: (<span class="string">&#x27;requested_range_not_satisfiable&#x27;</span>, <span class="string">&#x27;requested_range&#x27;</span>, <span class="string">&#x27;range_not_satisfiable&#x27;</span>),</span><br><span class="line"><span class="number">417</span>: (<span class="string">&#x27;expectation_failed&#x27;</span>,),</span><br><span class="line"><span class="number">418</span>: (<span class="string">&#x27;im_a_teapot&#x27;</span>, <span class="string">&#x27;teapot&#x27;</span>, <span class="string">&#x27;i_am_a_teapot&#x27;</span>),</span><br><span class="line"><span class="number">421</span>: (<span class="string">&#x27;misdirected_request&#x27;</span>,),</span><br><span class="line"><span class="number">422</span>: (<span class="string">&#x27;unprocessable_entity&#x27;</span>, <span class="string">&#x27;unprocessable&#x27;</span>),</span><br><span class="line"><span class="number">423</span>: (<span class="string">&#x27;locked&#x27;</span>,),</span><br><span class="line"><span class="number">424</span>: (<span class="string">&#x27;failed_dependency&#x27;</span>, <span class="string">&#x27;dependency&#x27;</span>),</span><br><span class="line"><span class="number">425</span>: (<span class="string">&#x27;unordered_collection&#x27;</span>, <span class="string">&#x27;unordered&#x27;</span>),</span><br><span class="line"><span class="number">426</span>: (<span class="string">&#x27;upgrade_required&#x27;</span>, <span class="string">&#x27;upgrade&#x27;</span>),</span><br><span class="line"><span class="number">428</span>: (<span class="string">&#x27;precondition_required&#x27;</span>, <span class="string">&#x27;precondition&#x27;</span>),</span><br><span class="line"><span class="number">429</span>: (<span class="string">&#x27;too_many_requests&#x27;</span>, <span class="string">&#x27;too_many&#x27;</span>),</span><br><span class="line"><span class="number">431</span>: (<span class="string">&#x27;header_fields_too_large&#x27;</span>, <span class="string">&#x27;fields_too_large&#x27;</span>),</span><br><span class="line"><span class="number">444</span>: (<span class="string">&#x27;no_response&#x27;</span>, <span class="string">&#x27;none&#x27;</span>),</span><br><span class="line"><span class="number">449</span>: (<span class="string">&#x27;retry_with&#x27;</span>, <span class="string">&#x27;retry&#x27;</span>),</span><br><span class="line"><span class="number">450</span>: (<span class="string">&#x27;blocked_by_windows_parental_controls&#x27;</span>, <span class="string">&#x27;parental_controls&#x27;</span>),</span><br><span class="line"><span class="number">451</span>: (<span class="string">&#x27;unavailable_for_legal_reasons&#x27;</span>, <span class="string">&#x27;legal_reasons&#x27;</span>),</span><br><span class="line"><span class="number">499</span>: (<span class="string">&#x27;client_closed_request&#x27;</span>,),</span><br><span class="line"></span><br><span class="line"><span class="comment"># Server Error.</span></span><br><span class="line"><span class="number">500</span>: (<span class="string">&#x27;internal_server_error&#x27;</span>, <span class="string">&#x27;server_error&#x27;</span>, <span class="string">&#x27;/o\\&#x27;</span>, <span class="string">&#x27;✗&#x27;</span>),</span><br><span class="line"><span class="number">501</span>: (<span class="string">&#x27;not_implemented&#x27;</span>,),</span><br><span class="line"><span class="number">502</span>: (<span class="string">&#x27;bad_gateway&#x27;</span>,),</span><br><span class="line"><span class="number">503</span>: (<span class="string">&#x27;service_unavailable&#x27;</span>, <span class="string">&#x27;unavailable&#x27;</span>),</span><br><span class="line"><span class="number">504</span>: (<span class="string">&#x27;gateway_timeout&#x27;</span>,),</span><br><span class="line"><span class="number">505</span>: (<span class="string">&#x27;http_version_not_supported&#x27;</span>, <span class="string">&#x27;http_version&#x27;</span>),</span><br><span class="line"><span class="number">506</span>: (<span class="string">&#x27;variant_also_negotiates&#x27;</span>,),</span><br><span class="line"><span class="number">507</span>: (<span class="string">&#x27;insufficient_storage&#x27;</span>,),</span><br><span class="line"><span class="number">509</span>: (<span class="string">&#x27;bandwidth_limit_exceeded&#x27;</span>, <span class="string">&#x27;bandwidth&#x27;</span>),</span><br><span class="line"><span class="number">510</span>: (<span class="string">&#x27;not_extended&#x27;</span>,),</span><br><span class="line"><span class="number">511</span>: (<span class="string">&#x27;network_authentication_required&#x27;</span>, <span class="string">&#x27;network_auth&#x27;</span>, <span class="string">&#x27;network_authentication&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>get 请求</p>
+<p>没有参数</p>
+<p>测试连接:<a target="_blank" rel="noopener" href="https://germey.gitbooks.io/python3webspider/content/[http:/httpbin.org/get">http://httpbin.org/get</a>，会判断如果如果是 GET 请求的话，会返回响应的 Request 信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&quot;http://httpbin.org/get&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;args&quot;</span>: &#123;&#125;, </span><br><span class="line">  <span class="string">&quot;headers&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;*/*&quot;</span>, </span><br><span class="line">    <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, </span><br><span class="line">    <span class="string">&quot;Host&quot;</span>: <span class="string">&quot;httpbin.org&quot;</span>, </span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;python-requests/2.22.0&quot;</span>, </span><br><span class="line">    <span class="string">&quot;X-Amzn-Trace-Id&quot;</span>: <span class="string">&quot;Root=1-5f5f0e95-cd68f9cadd5bdc14a9bd5868&quot;</span></span><br><span class="line">  &#125;, </span><br><span class="line">  <span class="string">&quot;origin&quot;</span>: <span class="string">&quot;111.122.73.198&quot;</span>, </span><br><span class="line">  <span class="string">&quot;url&quot;</span>: <span class="string">&quot;http://httpbin.org/get&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果返回的内容为json数据可以，通过<code>respons.json()</code>进行打印数据，这样返回的格式为json格式。</p>
+<p><strong>有参数</strong></p>
+<p>可以通过在url里面添加参数，但是这样有点麻烦，而requests里面可以通过&#x3D;&#x3D;params&#x3D;&#x3D;进行处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>:<span class="string">&quot;code&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">response = requests.get(<span class="string">&quot;http://httpbin.org/get&quot;</span>,params=params)</span><br><span class="line"><span class="built_in">print</span>(response.json())</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&#x27;args&#x27;</span>: &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;code&#x27;</span>&#125;, <span class="string">&#x27;headers&#x27;</span>: &#123;<span class="string">&#x27;Accept&#x27;</span>: <span class="string">&#x27;*/*&#x27;</span>, <span class="string">&#x27;Accept-Encoding&#x27;</span>: <span class="string">&#x27;gzip, deflate&#x27;</span>, <span class="string">&#x27;Host&#x27;</span>: <span class="string">&#x27;httpbin.org&#x27;</span>, <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;python-requests/2.22.0&#x27;</span>, <span class="string">&#x27;X-Amzn-Trace-Id&#x27;</span>: <span class="string">&#x27;Root=1-5f5f0fdc-d0f3dc64548f4f0896b8b747&#x27;</span>&#125;, <span class="string">&#x27;origin&#x27;</span>: <span class="string">&#x27;111.122.73.198&#x27;</span>, <span class="string">&#x27;url&#x27;</span>: <span class="string">&#x27;http://httpbin.org/get?name=code&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取二进制数据</strong></p>
+<p>图片、音频、视频这些文件都是本质上由二进制码组成的，由于有特定的保存格式和对应的解析方式，才可以看到这些形形色色的多媒体。所以想要抓取，那就需要拿到二进制码。</p>
+<ol>
+<li>以 <a target="_blank" rel="noopener" href="https://github.com/favicon.ico">GitHub 的站点图标</a>为例</li>
+</ol>
+<p>在爬取二进制数据时，应该使用content属性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">response = requests.get(<span class="string">&quot;https://github.com/favicon.ico&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br><span class="line"><span class="built_in">print</span>((response.content))</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">�:�������������������������������O     </span><br><span class="line"></span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
+
+<p>将二进制数据保存为图片，使用了 with open(‘文件名’,’w’) as f:具体用法：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zlllg/article/details/89315274">https://blog.csdn.net/zlllg/article/details/89315274</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">response = requests.get(<span class="string">&quot;https://github.com/favicon.ico&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;favicon.ico&#x27;</span>,<span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(response.content)</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>requests</code>里面的headers参数，就可以添加headers了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">response = requests.get(<span class="string">&quot;http://httpbin.org/get&quot;</span>,headers=headers)</span><br><span class="line"><span class="built_in">print</span>(response.json())</span><br></pre></td></tr></table></figure>
+
+<p>实际情况下，添加headers有时候需要添加很多</p>
+<p>如下：</p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/笔记\爬虫图片2\68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232352e706e67.png"></p>
+<p>可以观察到，请求头的格式为<code>A:B</code>，由于粘贴复制过来后，还是需要进行修改为字典形式，有点麻烦。接下来就动手弄一个方便转化headers的python代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">headers = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span></span><br><span class="line"><span class="string">Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="string">Accept-Language: en,zh-CN;q=0.9,zh;q=0.8</span></span><br><span class="line"><span class="string">Cache-Control: no-cache</span></span><br><span class="line"><span class="string">Host: httpbin.org</span></span><br><span class="line"><span class="string">Pragma: no-cache</span></span><br><span class="line"><span class="string">Proxy-Connection: keep-alive</span></span><br><span class="line"><span class="string">Upgrade-Insecure-Requests: 1</span></span><br><span class="line"><span class="string">User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_dict</span>(<span class="params">headers</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(&#123;header[<span class="number">0</span>].strip(): header[<span class="number">1</span>].strip() <span class="keyword">for</span> header <span class="keyword">in</span></span><br><span class="line">     [header.split(<span class="string">&quot;:&quot;</span>) <span class="keyword">for</span> header <span class="keyword">in</span> headers.split(<span class="string">&#x27;\n&#x27;</span>) <span class="keyword">if</span> header]&#125;)</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://httpbin.org/get&quot;</span></span><br><span class="line">response = requests.get(url=url,headers=str_to_dict(headers))</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：200</p>
+<p>解析headers的代码，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_dict</span>(<span class="params">headers</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(&#123;header[<span class="number">0</span>].strip(): header[<span class="number">1</span>].strip() <span class="keyword">for</span> header <span class="keyword">in</span></span><br><span class="line">     [header.split(<span class="string">&quot;:&quot;</span>) <span class="keyword">for</span> header <span class="keyword">in</span> headers.split(<span class="string">&#x27;\n&#x27;</span>) <span class="keyword">if</span> header]&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这样就能够直接粘贴复制headers过来，自动解析为字典形式了。</p>
+<h5 id="post请求"><a href="#post请求" class="headerlink" title="post请求"></a>post请求</h5><p>post方法与get方法基本用法一样，只是请求方式不同。</p>
+<p>没有表单数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">r = requests.post(<span class="string">&quot;http://httpbin.org/post&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>有表单数据</p>
+<p>通过data传递表单数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">data = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;germey&#x27;</span>, <span class="string">&#x27;age&#x27;</span>: <span class="string">&#x27;22&#x27;</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">&quot;http://httpbin.org/post&quot;</span>, data=data)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<h5 id="其他请求方式"><a href="#其他请求方式" class="headerlink" title="其他请求方式"></a>其他请求方式</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">r = requests.put(<span class="string">&#x27;http://httpbin.org/put&#x27;</span>)</span><br><span class="line">r = requests.delete(<span class="string">&#x27;http://httpbin.org/delete&#x27;</span>)</span><br><span class="line">r = requests.head(<span class="string">&#x27;http://httpbin.org/get&#x27;</span>)</span><br><span class="line">r = requests.options(<span class="string">&#x27;http://httpbin.org/get&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h4><h5 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h5><p>通过<code>files</code>关键字参数进行上传二进制数据，即文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">files = &#123;</span><br><span class="line">	<span class="string">&#x27;file&#x27;</span>:<span class="built_in">open</span>(<span class="string">&#x27;185494.jpg&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">response = requests.post(<span class="string">&#x27;http://httpbin.org/post&#x27;</span>,files=files)</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure>
+
+<h5 id="Cookies"><a href="#Cookies" class="headerlink" title="Cookies"></a>Cookies</h5><ul>
+<li>获取cookies</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://www.baidu.com&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(response.cookies)</span><br><span class="line"><span class="keyword">for</span> key,value <span class="keyword">in</span> response.cookies.items():</span><br><span class="line">    <span class="built_in">print</span>(key+<span class="string">&quot;=&quot;</span>+value)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;RequestsCookieJar[&lt;Cookie BDORZ=<span class="number">27315</span> <span class="keyword">for</span> .baidu.com/&gt;]&gt;</span><br><span class="line">BDORZ=<span class="number">27315</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过使用cookies来维持登录</li>
+</ul>
+<p>cookies在请求头里面进行设置的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&#x27;q_c1=31653b264a074fc9a57816d1ea93ed8b|1474273938000|1474273938000; d_c0=&quot;AGDAs254kAqPTr6NW1U3XTLFzKhMPQ6H_nc=|1474273938&quot;; __utmv=51854390.100-1|2=registration_date=20130902=1^3=entry_date=20130902=1;a_t=&quot;2.0AACAfbwdAAAXAAAAso0QWAAAgH28HQAAAGDAs254kAoXAAAAYQJVTQ4FCVgA360us8BAklzLYNEHUd6kmHtRQX5a6hiZxKCynnycerLQ3gIkoJLOCQ==&quot;;z_c0=Mi4wQUFDQWZid2RBQUFBWU1DemJuaVFDaGNBQUFCaEFsVk5EZ1VKV0FEZnJTNnp3RUNTWE10ZzBRZFIzcVNZZTFGQmZn|1474887858|64b4d4234a21de774c42c837fe0b672fdb5763b0&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Host&#x27;</span>: <span class="string">&#x27;www.zhihu.com&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line">r = requests.get(<span class="string">&#x27;https://www.zhihu.com&#x27;</span>, headers=headers)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<h5 id="会话维持"><a href="#会话维持" class="headerlink" title="会话维持"></a>会话维持</h5><p>测试网址:<a target="_blank" rel="noopener" href="http://httpbin.org/cookies/set/number/123456789">http://httpbin.org/cookies/set/number/123456789</a></p>
+<p>解决这个问题的主要方法就是维持同一个会话，也就是相当于打开一个新的浏览器选项卡而不是新开一个浏览器。但是又不想每次设置 Cookies，那该怎么办？这时候就有了新的利器 Session对象。</p>
+<p>利用它，可以方便地维护一个会话，而且不用担心 Cookies 的问题，它会自动处理好</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">requests.get(<span class="string">&quot;http://httpbin.org/cookies/set/number/123456789&quot;</span>)</span><br><span class="line">r = requests.get(<span class="string">&quot;http://httpbin.org/cookies&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;cookies&quot;: &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不能成功获取到设置的Cookies</p>
+<p><strong>使用Session</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">s=requests.Session()</span><br><span class="line">s.get(<span class="string">&quot;http://httpbin.org/cookies/set/number/123456789&quot;</span>)</span><br><span class="line">r=s.get(<span class="string">&#x27;http://httpbin.org/cookies&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;cookies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;number&quot;</span>: <span class="string">&quot;123456789&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用Session可以做到模拟同一个会话，而且不用担心Cookies的问题，通常用于模拟成功之后再进行下一步操作。</p>
+<p><strong>SSL证书验证</strong></p>
+<p>测试网站：<a target="_blank" rel="noopener" href="https://www.12306.cn/">https://www.12306.cn</a></p>
+<p>Requests提供证书验证功能，当发送HTTP请求的时候，它会检查SSL证书，可以使用verify这个参数来控制是否检查次证书，默认是True</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&quot;https://www.12306.cn&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>提示一个错误，叫做SSLError，证书验证错误，所有如果请求一个HTTPS站点，但是证书验证错误的页面时，就会报这样的错误，如何避免呢？只需要把verify参数设置为False</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&quot;https://www.12306.cn&quot;</span>,verify=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">InsecureRequestWarning: Unverified HTTPS request <span class="keyword">is</span> being made. Adding certificate verification <span class="keyword">is</span> strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html<span class="comment">#ssl-warnings</span></span><br><span class="line">  InsecureRequestWarning)</span><br><span class="line"><span class="number">200</span></span><br></pre></td></tr></table></figure>
+
+<p>不过发现报了一个警告，它提示建议给它指定证书。</p>
+<p>可以通过设置忽略警告的方式来屏蔽这个警告：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib3</span><br><span class="line"></span><br><span class="line">urllib3.disable_warnings()</span><br><span class="line">response = requests.get(<span class="string">&quot;https://www.12306.cn&quot;</span>,verify=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">200</span></span><br></pre></td></tr></table></figure>
+
+<p>或者通过捕获警告到日志的方式忽略警告：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">logging.captureWarnings(<span class="literal">True</span>)</span><br><span class="line">response = requests.get(<span class="string">&quot;https://www.12306.cn&quot;</span>,verify=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>可以指定一个本地证书用作客户端证书，可以是单个文件（包含密钥和证书）或一个包含两个文件路径的元组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">response = requests.get(<span class="string">&#x27;https://www.12306.cn&#x27;</span>,verify=<span class="string">&quot;E:/SRCA.crt&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;<strong>代理设置</strong>:理解不透彻呀&#x3D;&#x3D;</p>
+<p>设置代理，在Requests中需要用到proxies这个参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment">#代理池</span></span><br><span class="line">proxies=&#123;</span><br><span class="line">    <span class="string">&#x27;http&#x27;</span>: <span class="string">&#x27;http://10.10.1.10:3128&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;https&#x27;</span>: <span class="string">&#x27;http://10.10.1.10:1080&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">r=requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>,proxies=proxies)</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>若代理需要使用 <code>HTTP Basic Auth</code>，可以使用类似<code>http://user:password@host:port</code>这样的语法来设置代理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">    <span class="string">&#x27;https&#x27;</span>: <span class="string">&#x27;http://user:password@10.10.1.10:3128/&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line">requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>, proxies=proxies)</span><br></pre></td></tr></table></figure>
+
+<p>除了基本的 HTTP 代理，Requests 还支持 <code>SOCKS 协议</code>的代理。</p>
+<p>需要安装 Socks 这个库，命令如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install <span class="string">&quot;requests[socks]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后就可以使用 SOCKS 协议代理了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socks5://user:password@host:port</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">    <span class="string">&#x27;http&#x27;</span>: <span class="string">&#x27;socks5://user:password@host:port&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;https&#x27;</span>: <span class="string">&#x27;socks5://user:password@host:port&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>, proxies=proxies)</span><br></pre></td></tr></table></figure>
+
+<p><strong>超时设置</strong></p>
+<p>设置超时时间需要用到timeout参数，这个时间的计算是发出Request到服务器返回Response的时间</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>, timeout=<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>通过这样的方式，可以将超时时间设置为1秒，如果1秒没有响应，那就抛出异常。</p>
+<p>实际上请求分为两个阶段，即connect（连接）和read（读取）</p>
+<p>上面的设置timeout值将会用作connect和read两者的timeout时间总和。</p>
+<p>如果要分别指定，就可以传入一个元组。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>, timeout=(<span class="number">5</span>, <span class="number">11</span>))</span><br></pre></td></tr></table></figure>
+
+<p>如果想永久等待，那么可以直接将 timeout 设置为 None，或者不设置直接留空，因为默认是 None。这样的话，如果服务器还在运行，但是响应特别慢，那就慢慢等吧，它永远不会返回超时错误的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>, timeout=<span class="literal">None</span>)</span><br><span class="line">或者</span><br><span class="line">r = requests.get(<span class="string">&#x27;https://www.taobao.com&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>身份认证</strong></p>
+<p>在访问网页的时候，有可能遇到这样的页面认证，可以使用Requests字典的身份认证功能。</p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-2/笔记\爬虫图片2\68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232362e706e67.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.auth <span class="keyword">import</span> HTTPBasicAuth</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;https://istc.tt-rx.com/&#x27;</span>, auth=HTTPBasicAuth(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;password&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p>401</p>
+<p>就是账号密码不正确；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.auth <span class="keyword">import</span> HTTPBasicAuth</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;https://istc.tt-rx.com/&#x27;</span>, auth=HTTPBasicAuth(<span class="string">&#x27;202002220319&#x27;</span>, <span class="string">&#x27;220308&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p>200</p>
+<p>更简便的认证，可以直接传一个元组，它会默认使用 HTTPBasicAuth 这个类来认证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;http://localhost:5000&#x27;</span>, auth=(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;password&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br></pre></td></tr></table></figure>
+
+<p>Requests 还提供了其他的认证方式，如 OAuth 认证，不过需要安装 oauth 包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests_oauthlib</span><br></pre></td></tr></table></figure>
+
+<p>使用OAuth1方法认证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests_oauthlib <span class="keyword">import</span> OAuth1</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://api.twitter.com/1.1/account/verify_credentials.json&#x27;</span></span><br><span class="line">auth = OAuth1(<span class="string">&#x27;YOUR_APP_KEY&#x27;</span>, <span class="string">&#x27;YOUR_APP_SECRET&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;USER_OAUTH_TOKEN&#x27;</span>, <span class="string">&#x27;USER_OAUTH_TOKEN_SECRET&#x27;</span>)</span><br><span class="line">requests.get(url,auth=auth)</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://requests-oauthlib.readthedocs.io/en/latest/">requests_oaythlib官方文档</a></p>
+<p><strong>Prepared Request</strong></p>
+<p>当从API或者会话调用中收到一个Response对象时，request属性其实是使用了PreparedRequest。有时在发送请求之前，需要对body或者header（或者别的）坐一些额外处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> requests <span class="keyword">import</span> Request,Session</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://httpbin.org/post&#x27;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;angle&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">s = Session()</span><br><span class="line">req = Request(<span class="string">&#x27;POST&#x27;</span>,url,data=data,headers=headers)</span><br><span class="line">prepped = s.prepare_request(req)</span><br><span class="line">r = s.send(prepped)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>引入 Request，然后用 url、data、headers 参数构造了一个 Request 对象，需要再调用 Session 的 prepare_request() 方法将其转换为一个 Prepared Request 对象，然后调用 send() 方法发送即可</p>
+<p>有了 Request 这个对象，就可以将一个个请求当做一个独立的对象来看待，这样在进行队列调度的时候会非常方便</p>
+<p><strong>正则表达式</strong>（单独专题）</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0/" rel="prev" title="爬虫笔记">
+                  <i class="fa fa-chevron-left"></i> 爬虫笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-3/" rel="next" title="爬虫笔记-3">
+                  爬虫笔记-3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">袁叔叔</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

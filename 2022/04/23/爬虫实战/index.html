@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="爬虫实战一、抓取猫眼电影排行任务 猫眼电影地址 1、利用Request和正则表达式来抓取猫眼TOP100 2、提取出猫眼电影TOP100的电影名称、时间、评分、图片等信息，提取单独结果以文件形式保存下来。 分析打开猫眼电影可以查看榜单信息  在图中可以清楚地看到影片的信息，页面中显示的信息有影片名称、主演、上映时间、上映地区、评分、图片等。 之后点击下一页，观察url的变化。   可以发现http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫实战">
+<meta property="og:url" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="解忧杂货铺">
+<meta property="og:description" content="爬虫实战一、抓取猫眼电影排行任务 猫眼电影地址 1、利用Request和正则表达式来抓取猫眼TOP100 2、提取出猫眼电影TOP100的电影名称、时间、评分、图片等信息，提取单独结果以文件形式保存下来。 分析打开猫眼电影可以查看榜单信息  在图中可以清楚地看到影片的信息，页面中显示的信息有影片名称、主演、上映时间、上映地区、评分、图片等。 之后点击下一页，观察url的变化。   可以发现http">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232372e706e67.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232382e706e67.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232392e706e67.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片3/正则表达式1.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片3/正则表达式2.png">
+<meta property="og:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片3/正则表达式3.png">
+<meta property="article:published_time" content="2022-04-23T03:32:00.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:32:46.369Z">
+<meta property="article:author" content="袁叔叔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记/爬虫图片2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232372e706e67.png">
+
+
+<link rel="canonical" href="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/","path":"2022/04/23/爬虫实战/","title":"爬虫实战"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>爬虫实战 | 解忧杂货铺</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">解忧杂货铺</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">穷且志坚，不坠青云之志。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/home/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98"><span class="nav-number">1.</span> <span class="nav-text">爬虫实战</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%8A%93%E5%8F%96%E7%8C%AB%E7%9C%BC%E7%94%B5%E5%BD%B1%E6%8E%92%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">一、抓取猫眼电影排行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%93%E5%8F%96"><span class="nav-number">1.1.2.</span> <span class="nav-text">抓取</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">袁叔叔</p>
+  <div class="site-description" itemprop="description">记录点滴生活</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="袁叔叔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="解忧杂货铺">
+      <meta itemprop="description" content="记录点滴生活">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="爬虫实战 | 解忧杂货铺">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          爬虫实战
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-23 11:32:00 / Modified: 11:32:46" itemprop="dateCreated datePublished" datetime="2022-04-23T11:32:00+08:00">2022-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">爬虫实战</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="爬虫实战"><a href="#爬虫实战" class="headerlink" title="爬虫实战"></a>爬虫实战</h1><h2 id="一、抓取猫眼电影排行"><a href="#一、抓取猫眼电影排行" class="headerlink" title="一、抓取猫眼电影排行"></a>一、抓取猫眼电影排行</h2><p>任务</p>
+<p><a target="_blank" rel="noopener" href="https://verify.maoyan.com/verify?requestCode=110440a3ded85df5ac37f21937b0e8f6f3uyw&redirectURL=https://www.maoyan.com/board/4#/">猫眼电影地址</a></p>
+<p>1、利用Request和正则表达式来抓取<a target="_blank" rel="noopener" href="https://verify.maoyan.com/verify?requestCode=613e332cb65108b4e876f453e634bbb54fhhr&redirectURL=https://www.maoyan.com/board/4#/">猫眼TOP100</a></p>
+<p>2、提取出猫眼电影TOP100的电影名称、时间、评分、图片等信息，提取单独结果以文件形式保存下来。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>打开猫眼电影可以查看榜单信息</p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记\爬虫图片2\68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232372e706e67.png"></p>
+<p>在图中可以清楚地看到影片的信息，页面中显示的信息有影片名称、主演、上映时间、上映地区、评分、图片等。</p>
+<p>之后点击下一页，观察url的变化。</p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记\爬虫图片2\68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232382e706e67.png"></p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记\爬虫图片2\68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f546865466f7846616972792f6e6f7465626f6f6b2d706963676f406d61737465722f696d672f32303230303932353232333232392e706e67.png"></p>
+<p>可以发现<code>https://www.maoyan.com/board/4?timeStamp=1649853000898&amp;channelId=40011&amp;index=3&amp;signKey=421b13f3e2a628fc54fa4c7ed50cb52e&amp;sVersion=1&amp;webdriver=false&amp;offset=10</code>比之前的url多了一个参数offset，参数值为10，目前显示的排行数据11~20，可以判断offset是一个偏移量的参数再点击下一页，发现页面的 URL 变成了：<code>https://www.maoyan.com/board/4?timeStamp=1649853000898&amp;channelId=40011&amp;index=3&amp;signKey=421b13f3e2a628fc54fa4c7ed50cb52e&amp;sVersion=1&amp;webdriver=false&amp;offset=200</code>，参数 offset 变成了 20，而显示的结果是排行 21-30 的电影。</p>
+<p>可以判断offset是一个偏移量，如果偏移值为n，则当前页面的序号为n+1到n+10，这样就可以更根据offset获取top100的所有电影信息了。</p>
+<h3 id="抓取"><a href="#抓取" class="headerlink" title="抓取"></a>抓取</h3><p><strong>抓取首页</strong></p>
+<p>定义一个get_first_page()函数方法，实现抓取首页，代码实现，并通过str_to_dict()函数方法，解析headers</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,time</span><br><span class="line"></span><br><span class="line">headers = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Accept-Language: en,zh-CN;q=0.9,zh;q=0.8</span></span><br><span class="line"><span class="string">Cookie: __mta=210678314.1627713593055.1649992568598.1649992598507.20; _lxsdk_cuid=17afb4a58f4c8-00399e2c02ac12-2343360-1fa400-17afb4a58f4c8; __mta=210678314.1627713593055.1627713593055.1627713593055.1; ci=1%2C%E5%8C%97%E4%BA%AC; featrues=[object Object]; uuid_n_v=v1; uuid=89DF1230BB2311EC85C34127058B8F4A73C648C3BFD1475096858A92DEBA6BB1; _csrf=1f91913088b28282d83782d683f4d5f48b0d69604c987896ab0f12671f3c41ef; _lxsdk=89DF1230BB2311EC85C34127058B8F4A73C648C3BFD1475096858A92DEBA6BB1; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; __mta=210678314.1627713593055.1649854480101.1649992554037.19; _lxsdk_s=1802b384e74-1ab-34a-d08%7C%7C10</span></span><br><span class="line"><span class="string">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_dict</span>(<span class="params">headers</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(&#123;header[<span class="number">0</span>].strip(): header[<span class="number">1</span>].strip() <span class="keyword">for</span> header <span class="keyword">in</span></span><br><span class="line">     [header.split(<span class="string">&quot;:&quot;</span>) <span class="keyword">for</span> header <span class="keyword">in</span> headers.split(<span class="string">&#x27;\n&#x27;</span>) <span class="keyword">if</span> header]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_frist_page</span>(<span class="params">url</span>):</span><br><span class="line">    response = requests.get(url=url,headers=str_to_dict(headers))</span><br><span class="line">    <span class="keyword">if</span> response.status_code == requests.codes.ok:</span><br><span class="line">        <span class="keyword">return</span> response.text</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">url</span>):</span><br><span class="line">    response = get_frist_page(url=url)</span><br><span class="line">    <span class="built_in">print</span>(response)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    url = <span class="string">&quot;https://www.maoyan.com/board/4?timeStamp=1649992567796&amp;channelId=40011&amp;index=7&amp;signKey=4503f3b4766d3e8d0eee2147df6ff099&amp;sVersion=1&amp;webdriver=false&quot;</span></span><br><span class="line">    run(url=url)</span><br></pre></td></tr></table></figure>
+
+<p>一定要加上请求头，不然猫眼网站会禁止访问,而且猫眼电影现在有时间戳，超过时间就会有验证。</p>
+<p>&#x3D;&#x3D;解析headers&#x3D;&#x3D;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_dict</span>(<span class="params">headers</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(&#123;header[<span class="number">0</span>].strip(): header[<span class="number">1</span>].strip() <span class="keyword">for</span> header <span class="keyword">in</span></span><br><span class="line">     [header.split(<span class="string">&quot;:&quot;</span>) <span class="keyword">for</span> header <span class="keyword">in</span> headers.split(<span class="string">&#x27;\n&#x27;</span>) <span class="keyword">if</span> header]&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;.format&#x3D;&#x3D;</p>
+<p>替代符号的使用，使用规则{}   .format代替{}里的内容。</p>
+<p>&#x3D;&#x3D;确定是否链接成功&#x3D;&#x3D;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> response.status_code==requests.codes.ok:</span><br><span class="line">    <span class="keyword">return</span> response.text</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>使用正则提取数据</strong></p>
+<p>现在抓取了首页，需要进一步抓取相关信息，接下来回到网页看一下页面的真实源码，在开发者工具中 Network 监听，然后查看一下源代码，注意这里不要在 Elements 选项卡直接查看源码，此处的源码可能经过 JavaScript 的操作而和原始请求的不同，需要从Network选项卡部分查看原始请求得到的源码。</p>
+<p>先查看下html中的网页。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;dd&gt;</span><br><span class="line">                        &lt;i <span class="keyword">class</span>=<span class="string">&quot;board-index board-index-2&quot;</span>&gt;<span class="number">2</span>&lt;/i&gt;</span><br><span class="line">    &lt;a href=<span class="string">&quot;/films/1297&quot;</span> title=<span class="string">&quot;肖申克的救赎&quot;</span> <span class="keyword">class</span>=<span class="string">&quot;image-link&quot;</span> data-act=<span class="string">&quot;boarditem-click&quot;</span> data-val=<span class="string">&quot;&#123;movieId:1297&#125;&quot;</span>&gt;</span><br><span class="line">      &lt;img src=<span class="string">&quot;//s3plus.meituan.net/v1/mss_e2821d7f0cfe4ac1bf9202ecf9590e67/cdn-prod/file:5788b470/image/loading_2.e3d934bf.png&quot;</span> alt=<span class="string">&quot;&quot;</span> <span class="keyword">class</span>=<span class="string">&quot;poster-default&quot;</span> /&gt;</span><br><span class="line">      &lt;img data-src=<span class="string">&quot;https://p0.pipi.cn/mmdb/d2dad592c7e7e1d236f2aa1811a8a64794b33.jpg?imageView2/1/w/160/h/220&quot;</span> alt=<span class="string">&quot;肖申克的救赎&quot;</span> <span class="keyword">class</span>=<span class="string">&quot;board-img&quot;</span> /&gt;</span><br><span class="line">    &lt;/a&gt;</span><br><span class="line">    &lt;div <span class="keyword">class</span>=<span class="string">&quot;board-item-main&quot;</span>&gt;</span><br><span class="line">      &lt;div <span class="keyword">class</span>=<span class="string">&quot;board-item-content&quot;</span>&gt;</span><br><span class="line">              &lt;div <span class="keyword">class</span>=<span class="string">&quot;movie-item-info&quot;</span>&gt;</span><br><span class="line">        &lt;p <span class="keyword">class</span>=<span class="string">&quot;name&quot;</span>&gt;&lt;a href=<span class="string">&quot;/films/1297&quot;</span> title=<span class="string">&quot;肖申克的救赎&quot;</span> data-act=<span class="string">&quot;boarditem-click&quot;</span> data-val=<span class="string">&quot;&#123;movieId:1297&#125;&quot;</span>&gt;肖申克的救赎&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;p <span class="keyword">class</span>=<span class="string">&quot;star&quot;</span>&gt;</span><br><span class="line">                主演：蒂姆·罗宾斯,摩根·弗里曼,鲍勃·冈顿</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">&lt;p <span class="keyword">class</span>=<span class="string">&quot;releasetime&quot;</span>&gt;上映时间：<span class="number">1994</span>-09-<span class="number">10</span>(加拿大)&lt;/p&gt;    &lt;/div&gt;</span><br><span class="line">    &lt;div <span class="keyword">class</span>=<span class="string">&quot;movie-item-number score-num&quot;</span>&gt;</span><br><span class="line">&lt;p <span class="keyword">class</span>=<span class="string">&quot;score&quot;</span>&gt;&lt;i <span class="keyword">class</span>=<span class="string">&quot;integer&quot;</span>&gt;<span class="number">9.</span>&lt;/i&gt;&lt;i <span class="keyword">class</span>=<span class="string">&quot;fraction&quot;</span>&gt;<span class="number">5</span>&lt;/i&gt;&lt;/p&gt;        </span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">                &lt;/dd&gt;</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;根据html来写正则化表达式。&#x3D;&#x3D;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#排名信息:</span></span><br><span class="line">&lt;i.*?board-index.*?&gt;(.*?)&lt;/i&gt;</span><br><span class="line"><span class="comment">#图片信息</span></span><br><span class="line">&lt;img.*?data-src=<span class="string">&quot;(.*?)&quot;</span>.*?</span><br><span class="line"><span class="comment">#名字信息</span></span><br><span class="line">&lt;a.*?title=<span class="string">&quot;(.*?)&quot;</span>&gt;&lt;/a&gt;<span class="comment">#这个是存在问题的因为，&lt;a   这里存在很多找不到</span></span><br><span class="line">&lt;p.*?name.*?title=<span class="string">&quot;(.*?)&quot;</span></span><br><span class="line">&lt;p.*?title=<span class="string">&quot;(.*?)&quot;</span><span class="comment">#也可以</span></span><br><span class="line"><span class="comment">#主演</span></span><br><span class="line">&lt;p.*?<span class="keyword">class</span>=<span class="string">&quot;star&quot;</span>&gt;(.*?)&lt;/p&gt;.*?</span><br><span class="line"><span class="comment">#上映时间</span></span><br><span class="line">&lt;p.*?<span class="keyword">class</span>=<span class="string">&quot;releasetime&quot;</span>&gt;(.*?)</span><br><span class="line"><span class="comment">#评分等</span></span><br><span class="line">integer.*?&gt;(.*?)&lt;/i&gt;</span><br><span class="line">而且每个正则化表达式之间需要用：.*?连接</span><br></pre></td></tr></table></figure>
+
+<p>之后：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pattern=<span class="string">&quot;正则化表达式&quot;</span></span><br><span class="line"><span class="comment">#将正则化表达式进行封装re.compile重复使用，re.S使.匹配包括换行在内的所有字符</span></span><br><span class="line">pattern = re.<span class="built_in">compile</span>(pattern,re.S)</span><br><span class="line"><span class="comment">#findall()方法会搜索整个字符串然后返回匹配正则表达式的所有内容</span></span><br><span class="line">items = re.findall(pattern,response)</span><br><span class="line"><span class="comment">#将所有都依次打印出来</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        <span class="built_in">print</span>(item)</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;yield&#x3D;&#x3D;在函数中的功能类似于return，不同的是yield每次返回结果之后函数并没有退出，而是每次遇到yield关键字后返回相应结果，并保留函数当前的运行状态，等待下一次的调用。如果一个函数需要多次循环执行一个动作，并且每次执行的结果都是需要的，这种场景很适合使用yield实现。包含yield的函数成为一个生成器，生成器同时也是一个迭代器，支持通过next方法获取下一个值。</p>
+<p>&#x3D;&#x3D;strip()函数应用&#x3D;&#x3D;</p>
+<p><strong>1、默认用法：去除空格</strong></p>
+<p>str.<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=strip&spm=1001.2101.3001.7020">strip</a>() ： 去除字符串两边的空格<br>str.lstrip() ： 去除<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%AD%97%E7%AC%A6%E4%B8%B2&spm=1001.2101.3001.7020">字符串</a>左边的空格<br>str.rstrip() ： 去除字符串右边的空格</p>
+<p>注：此处的空格包含’\n’, ‘\r’, ‘\t’, ’ ’</p>
+<p><strong>2、去除指定字符</strong></p>
+<p>str.strip(‘do’) ：去除字符串两端指定的字符<br>str.lstrip(‘do’) ：用于去除左边指定的字符<br>str.rstrip(‘do’) ：用于去除右边指定的字符</p>
+<p>&#x3D;&#x3D;[5:]&#x3D;&#x3D;这个是列表</p>
+<p>[m : ] 代表列表中的第m+1项到最后一项</p>
+<p>[ : n] 代表列表中的第一项到第n项</p>
+<p>[-1] 代表去到最后一项</p>
+<p>[:-1]代表除了最后一个都获取到</p>
+<p>[::-1]代表逆序取，从后向前取</p>
+<p>[2::-1]代表从下标从0到2的三个数，逆序取</p>
+<p>[1:]代表从下标为1开始取到最后一个数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        <span class="keyword">yield</span> &#123;</span><br><span class="line">            <span class="string">&#x27;index&#x27;</span>: item[<span class="number">0</span>],</span><br><span class="line">            <span class="string">&#x27;image&#x27;</span>: item[<span class="number">1</span>],</span><br><span class="line">            <span class="string">&#x27;title&#x27;</span>: item[<span class="number">2</span>].strip(),</span><br><span class="line">            <span class="string">&#x27;time&#x27;</span>: item[<span class="number">3</span>].strip()[<span class="number">5</span>:] <span class="keyword">if</span> <span class="built_in">len</span>(item[<span class="number">3</span>]) &gt; <span class="number">5</span> <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;score&#x27;</span>: item[<span class="number">4</span>].strip() + item[<span class="number">5</span>].strip()</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记\爬虫图片3\正则表达式1.png"></p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记\爬虫图片3\正则表达式2.png"></p>
+<p><img src="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/笔记\爬虫图片3\正则表达式3.png"></p>
+<p><strong>存储数据</strong></p>
+<p>把数据存储到文本文件中，在这里直接写入到一个文本文件中，通过 json 库的 dumps() 方法实现字典的序列化，并指定 ensure_ascii 参数为 False，这样可以保证输出的结果是中文形式而不是 Unicode 编码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_to_json</span>(<span class="params">content</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="comment"># print(type(json.dumps(content)))</span></span><br><span class="line">        f.write(json.dumps(content,ensure_ascii=<span class="literal">False</span>,indent=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">url</span>):</span><br><span class="line">    response = get_frist_page(url=url)</span><br><span class="line">    items = parse_first_page(response)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        save_to_json(item)</span><br></pre></td></tr></table></figure>
+
+<p>所有代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,time</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">headers = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Accept-Language: en,zh-CN;q=0.9,zh;q=0.8</span></span><br><span class="line"><span class="string">Cookie: __mta=210678314.1627713593055.1649992568598.1649992598507.20; _lxsdk_cuid=17afb4a58f4c8-00399e2c02ac12-2343360-1fa400-17afb4a58f4c8; __mta=210678314.1627713593055.1627713593055.1627713593055.1; ci=1%2C%E5%8C%97%E4%BA%AC; featrues=[object Object]; uuid_n_v=v1; uuid=89DF1230BB2311EC85C34127058B8F4A73C648C3BFD1475096858A92DEBA6BB1; _csrf=1f91913088b28282d83782d683f4d5f48b0d69604c987896ab0f12671f3c41ef; _lxsdk=89DF1230BB2311EC85C34127058B8F4A73C648C3BFD1475096858A92DEBA6BB1; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; __mta=210678314.1627713593055.1649854480101.1649992554037.19; _lxsdk_s=1802b384e74-1ab-34a-d08%7C%7C10</span></span><br><span class="line"><span class="string">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_dict</span>(<span class="params">headers</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(&#123;header[<span class="number">0</span>].strip(): header[<span class="number">1</span>].strip() <span class="keyword">for</span> header <span class="keyword">in</span></span><br><span class="line">     [header.split(<span class="string">&quot;:&quot;</span>) <span class="keyword">for</span> header <span class="keyword">in</span> headers.split(<span class="string">&#x27;\n&#x27;</span>) <span class="keyword">if</span> header]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_first_page</span>(<span class="params">url</span>):</span><br><span class="line">    response=requests.get(url=url,headers=str_to_dict(headers),timeout=<span class="number">5000</span>)</span><br><span class="line">    <span class="keyword">if</span> response.status_code==requests.codes.ok:</span><br><span class="line"><span class="comment">#       print(&quot;连接成功&quot;)</span></span><br><span class="line">        <span class="keyword">return</span> response.text</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_first_page</span>(<span class="params">response</span>):</span><br><span class="line">    pattern = <span class="string">&#x27;&lt;i.*?board-index.*?&gt;(.*?)&lt;/i&gt;.*?&lt;img.*?data-src=&quot;(.*?)&quot;.*?&lt;p.*?name.*?title=&quot;(.*?)&quot;.*?/p&gt;.*?&lt;p.*?releasetime&quot;&gt;(.*?)&lt;/p&gt;.*?integer.*?&gt;(.*?)&lt;/i&gt;.*?fraction.*?&gt;(.*?)&lt;/i&gt;.*?&lt;/dd&gt;&#x27;</span></span><br><span class="line">    pattern = re.<span class="built_in">compile</span>(pattern,re.S)</span><br><span class="line">    items = re.findall(pattern,response)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        <span class="keyword">yield</span> &#123;</span><br><span class="line">            <span class="string">&#x27;index&#x27;</span>: item[<span class="number">0</span>],</span><br><span class="line">            <span class="string">&#x27;image&#x27;</span>: item[<span class="number">1</span>],</span><br><span class="line">            <span class="string">&#x27;title&#x27;</span>: item[<span class="number">2</span>].strip(),</span><br><span class="line">            <span class="string">&#x27;time&#x27;</span>: item[<span class="number">3</span>].strip()[<span class="number">5</span>:] <span class="keyword">if</span> <span class="built_in">len</span>(item[<span class="number">3</span>]) &gt; <span class="number">5</span> <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;score&#x27;</span>: item[<span class="number">4</span>].strip() + item[<span class="number">5</span>].strip()</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 存储数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_to_json</span>(<span class="params">content</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\data.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="comment"># print(type(json.dumps(content)))</span></span><br><span class="line">        f.write(json.dumps(content,ensure_ascii=<span class="literal">False</span>,indent=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">url</span>):</span><br><span class="line">    response = get_first_page(url=url)</span><br><span class="line">    items = parse_first_page(response)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        save_to_json(item)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        i=i*<span class="number">10</span>;</span><br><span class="line">        url=<span class="string">&#x27;https://www.maoyan.com/board/4?timeStamp=1650162870764&amp;channelId=40011&amp;index=5&amp;signKey=0f082f1f80becb457a3020f82e37a242&amp;sVersion=1&amp;webdriver=false&amp;offset=&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(i)</span><br><span class="line">        run(url=url)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>&#x3D;&#x3D;构造URL&#x3D;&#x3D;</p>
+<p>1)先定义base_url来表示请求的URL的前半部分。</p>
+<p>2）构造参数字典，其中limit是固定参数，page是可变参数，</p>
+<p>3）再调用urlencode()方法将参数转化为URL的GET请求参数，随后base_url与参数拼合形成一个新的URL</p>
+<p>4)最后用requests请求这个链接，加入headers参数，当响应码为200时，调用json()方法将内容解析为JSON返回，否则不返回任何信息，如果出现异常则捕获输出异常的信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlencode</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">base_url=<span class="string">&#x27;https://www.zhihu.com/api/v4/news_specials/list?&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_offset</span>(<span class="params">offset</span>):</span><br><span class="line">    params=&#123;</span><br><span class="line">        <span class="string">&#x27;limit&#x27;</span>:<span class="string">&#x27;10&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;offset&#x27;</span>:offset</span><br><span class="line">    &#125;</span><br><span class="line">    url=base_url+urlencode(params)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response=requests.get(url,headers=headers)</span><br><span class="line">        <span class="keyword">if</span> response.status_code==<span class="number">200</span>:</span><br><span class="line">            <span class="keyword">return</span> response.json()</span><br><span class="line">   	<span class="keyword">except</span> requests.ConnectionError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Error&#x27;</span>,e.args)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">for</span> offset <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">        json=get_offset(offset)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-4/" rel="prev" title="爬虫笔记-4">
+                  <i class="fa fa-chevron-left"></i> 爬虫笔记-4
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98-2/" rel="next" title="爬虫实战-2">
+                  爬虫实战-2 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">袁叔叔</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

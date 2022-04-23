@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="爬虫笔记 爬虫学的好，牢饭吃的早（4）数据存储利用爬虫爬取数据之后，进行存储。可用以下几种方式进行存储。  &#x3D;&#x3D;1、文本存储&#x3D;&#x3D;TXT文件存储 实例 利用open()方法打开一个文本文件，并获取一个文件操作的对象 12345678910111213141516171819import requestsfrom pyquery import PyQuery a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫笔记-4">
+<meta property="og:url" content="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-4/index.html">
+<meta property="og:site_name" content="解忧杂货铺">
+<meta property="og:description" content="爬虫笔记 爬虫学的好，牢饭吃的早（4）数据存储利用爬虫爬取数据之后，进行存储。可用以下几种方式进行存储。  &#x3D;&#x3D;1、文本存储&#x3D;&#x3D;TXT文件存储 实例 利用open()方法打开一个文本文件，并获取一个文件操作的对象 12345678910111213141516171819import requestsfrom pyquery import PyQuery a">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-04-23T03:27:41.000Z">
+<meta property="article:modified_time" content="2022-04-23T03:30:36.750Z">
+<meta property="article:author" content="袁叔叔">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-4/","path":"2022/04/23/爬虫笔记-4/","title":"爬虫笔记-4"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>爬虫笔记-4 | 解忧杂货铺</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">解忧杂货铺</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">穷且志坚，不坠青云之志。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/home/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-%E7%88%AC%E8%99%AB%E5%AD%A6%E7%9A%84%E5%A5%BD%EF%BC%8C%E7%89%A2%E9%A5%AD%E5%90%83%E7%9A%84%E6%97%A9%EF%BC%884%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">爬虫笔记 爬虫学的好，牢饭吃的早（4）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="nav-number">1.1.</span> <span class="nav-text">数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#x3D-x3D-1%E3%80%81%E6%96%87%E6%9C%AC%E5%AD%98%E5%82%A8-x3D-x3D"><span class="nav-number">1.1.1.</span> <span class="nav-text">&#x3D;&#x3D;1、文本存储&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x3D-x3D-2%E3%80%81JSON%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8-x3D-x3D"><span class="nav-number">1.1.3.</span> <span class="nav-text">&#x3D;&#x3D;2、JSON文件存储&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.4.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96Json"><span class="nav-number">1.1.5.</span> <span class="nav-text">取Json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BAjson"><span class="nav-number">1.1.6.</span> <span class="nav-text">输出json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81CSV%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8"><span class="nav-number">1.1.7.</span> <span class="nav-text">3、CSV文件存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.1.8.</span> <span class="nav-text">4、数据库</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">袁叔叔</p>
+  <div class="site-description" itemprop="description">记录点滴生活</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="袁叔叔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="解忧杂货铺">
+      <meta itemprop="description" content="记录点滴生活">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="爬虫笔记-4 | 解忧杂货铺">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          爬虫笔记-4
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-23 11:27:41 / Modified: 11:30:36" itemprop="dateCreated datePublished" datetime="2022-04-23T11:27:41+08:00">2022-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">爬虫笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="爬虫笔记-爬虫学的好，牢饭吃的早（4）"><a href="#爬虫笔记-爬虫学的好，牢饭吃的早（4）" class="headerlink" title="爬虫笔记 爬虫学的好，牢饭吃的早（4）"></a>爬虫笔记 爬虫学的好，牢饭吃的早（4）</h1><h2 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h2><p>利用爬虫爬取数据之后，进行存储。可用以下几种方式进行存储。</p>
+<hr>
+<h3 id="x3D-x3D-1、文本存储-x3D-x3D"><a href="#x3D-x3D-1、文本存储-x3D-x3D" class="headerlink" title="&#x3D;&#x3D;1、文本存储&#x3D;&#x3D;"></a>&#x3D;&#x3D;1、文本存储&#x3D;&#x3D;</h3><p><strong>TXT文件存储</strong></p>
+<p>实例</p>
+<p>利用open()方法打开一个文本文件，并获取一个文件操作的对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> pyquery <span class="keyword">import</span> PyQuery <span class="keyword">as</span> pq</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.zhihu.com/explore&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">response = requests.get(url,headers=headers)</span><br><span class="line">content = response.text</span><br><span class="line"><span class="comment"># pq解析</span></span><br><span class="line">doc = pq(content)</span><br><span class="line">items = doc(<span class="string">&#x27;.explore-tab .feed-item&#x27;</span>).items()</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">    question = item(<span class="string">&#x27;.question_link&#x27;</span>).text()</span><br><span class="line">    author = item(<span class="string">&#x27;.avatar-link&#x27;</span>).text()</span><br><span class="line">    answer = pq(item.find(<span class="string">&#x27;.content&#x27;</span>).html()).text()</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;explore.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(<span class="string">&#x27;\n&#x27;</span>.join([question,author,answer]))</span><br><span class="line">        f.write(<span class="string">&#x27;\n&#x27;</span>+<span class="string">&#x27;=&#x27;</span>*<span class="number">50</span>+<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;.items()函数用法&#x3D;&#x3D;</p>
+<p>Python 字典 items() 方法以列表返回视图对象，是一个可遍历的key&#x2F;value 对。</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-att-dictionary-keys.html">dict.keys()</a>、<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-att-dictionary-values.html">dict.values()</a> 和 dict.items() 返回的都是视图对象（ view objects），提供了字典实体的动态视图，这就意味着字典改变，视图也会跟着变化。</p>
+<p>视图对象不是列表，不支持索引，可以使用 list() 来转换为列表。</p>
+<p>我们不能对视图对象进行任何的修改，因为字典的视图对象都是只读的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>Element类型是’lxml.etree._Element’，某种意义来说同时是一个<strong>列表</strong></li>
+<li>列表的需要使用<strong>tag\attrib\text</strong>三个不同的属性来获取我们需要的东西</li>
+<li><strong>变量.tag</strong>获取到的是<strong>标签名</strong>是—<strong>字符串</strong></li>
+<li><strong>变量.attrib</strong>获取到的是<strong>节点标签a的属性</strong>—<strong>字典</strong></li>
+<li><strong>变量.text</strong>获取到的是<strong>标签文本</strong>–<strong>字符串</strong></li>
+</ul>
+<p>打开方式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">r:以只读方式打开文件</span><br><span class="line">rb:以二进制格式打开文件用于只读</span><br><span class="line">r+:以读写方式打开</span><br><span class="line">rb+:以二进制方式打开并读写文件</span><br><span class="line">w:以只写方式打开文件，如果文件已存在则会被覆盖，不存在则会新建一个文件</span><br><span class="line">w+:以读写方式打开文件，如果文件已存在则会被覆盖，不存在则会新建一个文件</span><br><span class="line">wb+:以二进制方式打开并读写文件，如果文件已存在则会被覆盖，不存在则会新建一个文件</span><br><span class="line">a:打开文件向文本追加新内容，如果文件已存在则会被覆盖，不存在则会新建一个文件</span><br><span class="line">a+:以二进制方式打开文件向文本追加新内容，如果文件已存在则会被覆盖，不存在则会新建一个文件</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;写入text中：&#x3D;&#x3D;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;E:\yy.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">     f.write(<span class="string">&#x27;\n&#x27;</span>.join([question]))</span><br><span class="line">     f.write(<span class="string">&#x27;\n&#x27;</span>+<span class="string">&#x27;=&#x27;</span>*<span class="number">50</span>+<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>TypeError: sequence item 0: expected str instance, NoneType found解决办法</strong></em></p>
+<p>在append()每一页内容时，增加if 和 continue语句，如果是None值则不执行append()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> text == <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">continue</span> </span><br></pre></td></tr></table></figure>
+
+<h3 id="x3D-x3D-2、JSON文件存储-x3D-x3D"><a href="#x3D-x3D-2、JSON文件存储-x3D-x3D" class="headerlink" title="&#x3D;&#x3D;2、JSON文件存储&#x3D;&#x3D;"></a>&#x3D;&#x3D;2、JSON文件存储&#x3D;&#x3D;</h3><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a><strong>说明</strong></h3><p>Json，全称为JavaScript Object Notation，即JavaScript对象标记。</p>
+<p>json格式:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Bob&quot;</span>,</span><br><span class="line">    <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">    <span class="string">&quot;birthday&quot;</span>: <span class="string">&quot;1992-10-18&quot;</span></span><br><span class="line">&#125;, &#123;</span><br><span class="line">     <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Selina&quot;</span>,</span><br><span class="line">    <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;female&quot;</span>,</span><br><span class="line">    <span class="string">&quot;birthday&quot;</span>: <span class="string">&quot;1995-10-18&quot;</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="取Json"><a href="#取Json" class="headerlink" title="取Json"></a><strong>取Json</strong></h3><p>通过json库实现对json文件的读写操作，调用json库的l&#x3D;&#x3D;loads()方法将Json文本字符串转为Json对象&#x3D;&#x3D;，可以通过&#x3D;&#x3D;dumps()方法将Json对象转为文本字符串&#x3D;&#x3D;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">content = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            [&#123;</span></span><br><span class="line"><span class="string">                &quot;name&quot;: &quot;Bob&quot;,</span></span><br><span class="line"><span class="string">                &quot;gender&quot;: &quot;male&quot;,</span></span><br><span class="line"><span class="string">                &quot;birthday&quot;: &quot;1992-10-18&quot;</span></span><br><span class="line"><span class="string">            &#125;, &#123;</span></span><br><span class="line"><span class="string">                &quot;name&quot;: &quot;Selina&quot;,</span></span><br><span class="line"><span class="string">                &quot;gender&quot;: &quot;female&quot;,</span></span><br><span class="line"><span class="string">                &quot;birthday&quot;: &quot;1995-10-18&quot;</span></span><br><span class="line"><span class="string">            &#125;]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(content))</span><br><span class="line">content = json.loads(content)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(content))</span><br><span class="line"><span class="built_in">print</span>(content)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;str&#x27;</span>&gt;</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;list&#x27;</span>&gt;</span><br><span class="line">[&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="string">&#x27;male&#x27;</span>, <span class="string">&#x27;birthday&#x27;</span>: <span class="string">&#x27;1992-10-18&#x27;</span>&#125;, &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Selina&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="string">&#x27;female&#x27;</span>, <span class="string">&#x27;birthday&#x27;</span>: <span class="string">&#x27;1995-10-18&#x27;</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>注意: Json 的数据需要用双引号来包围，不能使用单引号，不然会抛出如下错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json.decoder.JSONDecodeError: Expecting <span class="built_in">property</span> name enclosed <span class="keyword">in</span> double quotes: line <span class="number">3</span> column <span class="number">5</span> (char <span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从json文本中读取内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test.json&#x27;</span>,<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    content = f.read()</span><br><span class="line">    content = json.loads(content)</span><br><span class="line">    <span class="built_in">print</span>(content)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="string">&#x27;male&#x27;</span>, <span class="string">&#x27;birthday&#x27;</span>: <span class="string">&#x27;1992-10-18&#x27;</span>&#125;, &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Selina&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="string">&#x27;female&#x27;</span>, <span class="string">&#x27;birthday&#x27;</span>: <span class="string">&#x27;1995-10-18&#x27;</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出json"><a href="#输出json" class="headerlink" title="输出json"></a><strong>输出json</strong></h3><p>利用&#x3D;&#x3D;dumps()方法将json对象转化为字符串&#x3D;&#x3D;，然后使用write()方法写入文本中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">content = [&#123;</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Bob&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;gender&#x27;</span>: <span class="string">&#x27;male&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;birthday&#x27;</span>: <span class="string">&#x27;1992-10-18&#x27;</span></span><br><span class="line">&#125;]</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test2.json&#x27;</span>,<span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(json.dumps(content))</span><br></pre></td></tr></table></figure>
+
+<p>如果json中包含&#x3D;&#x3D;中文字符&#x3D;&#x3D;，为了保证输出正文，需要指定一个参数ensure_ascii&#x3D;False，另外还需要指定文件输出的编码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">content = [&#123;</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;天使&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;gender&#x27;</span>: <span class="string">&#x27;女&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;birthday&#x27;</span>: <span class="string">&#x27;1992-10-18&#x27;</span></span><br><span class="line">&#125;]</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test2.json&#x27;</span>,<span class="string">&#x27;w&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(json.dumps(content,ensure_ascii=<span class="literal">False</span>,indent=<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、CSV文件存储"><a href="#3、CSV文件存储" class="headerlink" title="3、CSV文件存储"></a>3、CSV文件存储</h3><p>CSV,全称叫做Comma-Separated Values,即逗号分隔符或者字符分隔符</p>
+<p><strong>写入</strong></p>
+<p>通过open()方法写入并创建一个csv文件，调用csv库的writer()方法初始化一个写入对象，传入该语句中，然后调用writerrow()方法传入每行的数据即可完成写入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;w&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    writer = csv.writer(csvfile)</span><br><span class="line">    writer.writerow([<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">    writer.writerow([<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<p>注意：如果不带newline&#x3D;’’,会发现也能写入结果，但是每行之间内容之间总是会多出一个空行。</p>
+<p>如果想修改列与列之间的分隔符可以传入delimiter参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;w&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    writer = csv.writer(csvfile,delimiter=<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    writer.writerow([<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">    writer.writerow([<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<p>默认的分割符逗号(,)会被换成delimeter参数设置的分隔符</p>
+<p>可以同时传入多行，需要使用writerrows()方法</p>
+<p>注意：&#x3D;&#x3D;writerows&#x3D;&#x3D;而不是writerow</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;w&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    writer = csv.writer(csvfile)</span><br><span class="line">    writer.writerow([<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">    writer.writerows([[<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>],[<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>],[<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>以字典的形式写入csv文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;w&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    <span class="comment"># 预先定义字段</span></span><br><span class="line">    fieldnames = [<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">    <span class="comment"># 初始化一个字典写入对象</span></span><br><span class="line">    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)</span><br><span class="line">    <span class="comment"># 调用writeheader()方法先写入头信息</span></span><br><span class="line">    writer.writeheader()</span><br><span class="line">    <span class="comment"># 调用writerow传入相应字典</span></span><br><span class="line">    writer.writerow(&#123;<span class="string">&#x27;id&#x27;</span>:<span class="number">1</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;angle&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>追加csv文本内容</p>
+<p>注意这里就不同调用writeheader()方法，不然会将头部信息一并写入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;a&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    <span class="comment"># 预先定义字段</span></span><br><span class="line">    fieldnames = [<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">    <span class="comment"># 初始化一个字典写入对象</span></span><br><span class="line">    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)</span><br><span class="line">    <span class="comment"># 调用writerow传入相应字典</span></span><br><span class="line">    writer.writerow(&#123;<span class="string">&#x27;id&#x27;</span>:<span class="number">1</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;angle&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>若将中文写入csv文件中，需要指定编码格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;a&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>，encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    <span class="comment"># 预先定义字段</span></span><br><span class="line">    fieldnames = [<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">    <span class="comment"># 初始化一个字典写入对象</span></span><br><span class="line">    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)</span><br><span class="line">    <span class="comment"># 调用writerow传入相应字典</span></span><br><span class="line">    writer.writerow(&#123;<span class="string">&#x27;id&#x27;</span>:<span class="number">1</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;angle&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>利用pandas库写入csv文件</p>
+<p>注意，字典的键值对中值的类型是列表形式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>:[<span class="string">&quot;angle&quot;</span>],</span><br><span class="line">    <span class="string">&quot;age&quot;</span>:[<span class="number">18</span>],</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(data)</span><br><span class="line">df = pd.DataFrame(data)</span><br><span class="line"><span class="comment"># print(df)</span></span><br><span class="line">df.to_csv(<span class="string">&#x27;csv1.csv&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>读取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    reader = csv.reader(csvfile)</span><br><span class="line">    <span class="keyword">for</span> content <span class="keyword">in</span> reader:</span><br><span class="line">        <span class="built_in">print</span>(content)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">[<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;angle&#x27;</span>]</span><br><span class="line">[<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">[<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;angle&#x27;</span>]</span><br><span class="line">[<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>利用pandas中read_csv()方法将数据从csv中读取出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.csv&#x27;</span>, <span class="string">&#x27;w&#x27;</span>,newline=<span class="string">&#x27;&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">    writer = csv.writer(csvfile)</span><br><span class="line">    writer.writerow([<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">    writer.writerows([[<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>],[<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>],[<span class="string">&#x27;10001&#x27;</span>, <span class="string">&#x27;米库&#x27;</span>]])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用pandas读取csv文本内容，需要写入csv文本后时指定编码格式utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">      <span class="built_in">id</span> name</span><br><span class="line"><span class="number">0</span>  <span class="number">10001</span>   米库</span><br><span class="line"><span class="number">1</span>  <span class="number">10001</span>   米库</span><br><span class="line"><span class="number">2</span>  <span class="number">10001</span>   米库</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、数据库"><a href="#4、数据库" class="headerlink" title="4、数据库"></a>4、数据库</h3><p><strong>关系数据库</strong></p>
+<p>Mysql</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%88%AC%E8%99%AB%E7%AC%94%E8%AE%B0-3/" rel="prev" title="爬虫笔记-3">
+                  <i class="fa fa-chevron-left"></i> 爬虫笔记-3
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98/" rel="next" title="爬虫实战">
+                  爬虫实战 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">袁叔叔</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
